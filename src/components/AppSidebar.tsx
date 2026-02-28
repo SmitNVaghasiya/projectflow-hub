@@ -72,12 +72,13 @@ export function AppSidebar() {
             {user.email}
           </div>
         )}
-        <div className="flex items-center gap-2">
+        <div className={`flex ${collapsed ? "flex-col" : "items-center"} gap-2`}>
           <Button
             variant="ghost"
             size="icon"
             onClick={toggleTheme}
-            className="h-8 w-8 text-muted-foreground hover:text-foreground"
+            className="h-8 w-8 shrink-0 text-muted-foreground hover:text-foreground"
+            title="Toggle theme"
           >
             {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </Button>
@@ -97,7 +98,8 @@ export function AppSidebar() {
               variant="ghost"
               size="icon"
               onClick={signOut}
-              className="h-8 w-8 text-muted-foreground hover:text-destructive"
+              className="h-8 w-8 shrink-0 text-muted-foreground hover:text-destructive"
+              title="Sign Out"
             >
               <LogOut className="h-4 w-4" />
             </Button>
