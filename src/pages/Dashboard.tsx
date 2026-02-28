@@ -22,7 +22,7 @@ export default function Dashboard() {
   const recentProjects = projects.slice(0, 6);
 
   return (
-    <div className="space-y-8 max-w-6xl">
+    <div className="space-y-8 w-full">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
@@ -92,7 +92,7 @@ export default function Dashboard() {
               <FolderOpen className="h-12 w-12 text-muted-foreground/40 mb-2" />
               <p className="text-muted-foreground font-medium">No projects yet.</p>
               <p className="text-sm text-muted-foreground max-w-sm">
-                Create a project manually, or load your 20 pre-planned AI/ML projects from the roadmap.
+                Click the button below to create your first project and start tracking your progress.
               </p>
               <div className="flex gap-3 mt-2 flex-wrap justify-center">
                 <Button onClick={() => setNewOpen(true)} className="gradient-primary">
