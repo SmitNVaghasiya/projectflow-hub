@@ -21,6 +21,7 @@ export default function Settings() {
   const [saving, setSaving] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [confirmEmail, setConfirmEmail] = useState("");
 
   const handleSaveName = async () => {
     setSaving(true);
@@ -110,12 +111,25 @@ export default function Settings() {
       </Card>
 
       {/* Delete Account Confirmation */}
-      <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+      <AlertDialog open={deleteOpen} onOpenChange={(val) => { if (!val) setConfirmEmail(""); setDeleteOpen(val); }}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Account?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This will permanently delete all your projects and sign you out. This cannot be undone.
+            <AlertDialogDescription asChild>
+              <div className="space-y-4 pt-2">
+                <p>This will permanently delete all your projects and sign you out. This cannot be undone.</p>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-foreground">
+                    Type your email <strong>{user?.email}</strong> to confirm:
+                  </label>
+                  <Input
+                    value={confirmEmail}
+                    onChange={(e) => setConfirmEmail(e.target.value)}
+                    placeholder={user?.email || "your email"}
+                    type="email"
+                  />
+                </div>
+              </div>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -123,7 +137,7 @@ export default function Settings() {
             <AlertDialogAction
               onClick={handleDeleteAccount}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-              disabled={deleting}
+              disabled={deleting || confirmEmail !== user?.email}
             >
               {deleting && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
               Yes, Delete Everything

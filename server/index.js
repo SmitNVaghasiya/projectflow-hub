@@ -1,3 +1,9 @@
+import { config } from "dotenv";
+import { fileURLToPath } from "url";
+import path from "path";
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+config({ path: path.resolve(__dirname, "../.env") });
+
 import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.js";
@@ -22,5 +28,6 @@ app.get("/api/health", (_req, res) => {
 // ─── Start ──────────────────────────────────────────────────────────────────
 app.listen(PORT, () => {
     console.log(`\n  ✅  ProjectHub API running at http://localhost:${PORT}`);
-    console.log(`  📦  Database: SQLite (local file)\n`);
+    console.log(`  🐘  Database: PostgreSQL (Neon)\n`);
 });
+
