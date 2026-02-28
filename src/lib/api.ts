@@ -1,5 +1,5 @@
-// Centralized API client for the ProjectHub Node.js backend
-const API_BASE = "http://localhost:3001/api";
+// Centralized API client for the ProjectHub backend
+const API_BASE = import.meta.env.VITE_API_URL || "/api";
 
 // ─── Token Management ───────────────────────────────────────────────────────
 function getToken(): string | null {
@@ -49,10 +49,10 @@ export interface ApiUser {
     user_metadata: { display_name: string };
 }
 
-export async function apiSignup(email: string, password: string, display_name: string) {
+export async function apiSignup(email: string, password: string, display_name: string, code: string) {
     const result = await apiFetch<{ token: string; user: ApiUser }>("/auth/signup", {
         method: "POST",
-        body: JSON.stringify({ email, password, display_name }),
+        body: JSON.stringify({ email, password, display_name, code }),
     });
     if (result.data?.token) {
         setToken(result.data.token);
@@ -85,6 +85,25 @@ export async function apiUpdateMe(updates: { display_name?: string }) {
 export async function apiDeleteAccount() {
     const result = await apiFetch("/auth/me", { method: "DELETE" });
     clearToken();
+    return result;
+}
+
+// ─── OTP API ────────────────────────────────────────────────────────────────
+export async function apiSendOtp(email: string) {
+    return apiFetch<{ message: string }>("/auth/send-otp", {
+        method: "POST",
+        body: JSON.stringify({ email }),
+    });
+}
+
+export async function apiVerifyOtp(email: string, code: string) {
+    const result = await apiFetch<{ message: string; verified: boolean; token?: string; user?: ApiUser }>("/auth/verify-otp", {
+        method: "POST",
+        body: JSON.stringify({ email, code }),
+    });
+    if (result.data?.token) {
+        setToken(result.data.token);
+    }
     return result;
 }
 

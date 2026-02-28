@@ -33,7 +33,7 @@ export default function KanbanBoard() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Kanban Board</h1>
           <p className="text-muted-foreground mt-1">Drag and drop projects between columns</p>
@@ -64,8 +64,8 @@ export default function KanbanBoard() {
                       ref={provided.innerRef}
                       {...provided.droppableProps}
                       className={`flex-1 rounded-xl border border-dashed p-3 space-y-3 min-h-[200px] transition-colors ${snapshot.isDraggingOver
-                          ? "border-primary/60 bg-primary/5"
-                          : "border-border bg-muted/30"
+                        ? "border-primary/60 bg-primary/5"
+                        : "border-border bg-muted/30"
                         }`}
                     >
                       {isLoading ? (

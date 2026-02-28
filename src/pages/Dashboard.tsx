@@ -3,30 +3,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { FolderOpen, CheckCircle2, Clock, AlertTriangle, Plus, Sparkles, Loader2 } from "lucide-react";
+import { FolderOpen, CheckCircle2, Clock, AlertTriangle, Plus } from "lucide-react";
 import { useProjects } from "@/hooks/useProjects";
 import { NewProjectDialog } from "@/components/NewProjectDialog";
 import { ProjectCard } from "@/components/ProjectCard";
-import { seedProjects } from "@/lib/seedData";
-import { toast } from "sonner";
 
 export default function Dashboard() {
   const { projects, isLoading, stats } = useProjects();
   const [newOpen, setNewOpen] = useState(false);
-  const [seeding, setSeeding] = useState(false);
-
-  const handleSeed = async () => {
-    setSeeding(true);
-    const { count, error } = await seedProjects();
-    setSeeding(false);
-    if (error) {
-      toast.error("Failed to load sample projects: " + error);
-    } else {
-      toast.success(`${count} sample projects loaded! 🎉`);
-      // Force refetch
-      window.location.reload();
-    }
-  };
 
   const statCards = [
     { label: "Total Projects", value: stats.total, icon: FolderOpen, color: "text-primary" },
@@ -39,7 +23,7 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-8 max-w-6xl">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
           <p className="text-muted-foreground mt-1">Overview of your project portfolio</p>
@@ -111,17 +95,9 @@ export default function Dashboard() {
                 Create a project manually, or load your 20 pre-planned AI/ML projects from the roadmap.
               </p>
               <div className="flex gap-3 mt-2 flex-wrap justify-center">
-                <Button variant="outline" onClick={() => setNewOpen(true)}>
+                <Button onClick={() => setNewOpen(true)} className="gradient-primary">
                   <Plus className="h-4 w-4 mr-2" />
                   New Project
-                </Button>
-                <Button className="gradient-primary" onClick={handleSeed} disabled={seeding}>
-                  {seeding ? (
-                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  ) : (
-                    <Sparkles className="h-4 w-4 mr-2" />
-                  )}
-                  {seeding ? "Loading..." : "Load My 20 Projects"}
                 </Button>
               </div>
             </div>

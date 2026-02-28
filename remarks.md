@@ -3,11 +3,12 @@
         -- Now here is my plan we add ai agent such that it will not change any of the written text we did but it will be able to update us by the git repo commits i can put this in seperate section or i can add it such that it will ask user if what agent is updating is correct or not and he will be able to decide to update or not.
         -- we add feature such that site will be able to see the git repo commits in the site in seperate dashboard like view in the site and also the tasks in the site will be updated according to the commits in the git repo.
 
-<!-- -- I have to change database to the postgresql as sql lite is tempory place holder.
+<!-- -- I have to change database to the postgresql as sql lite is tempory place holder. -- Done.
 
--- In each delete buttons i have to add feature where i have to type or copy paste project name just as shown in the dialog box so that i or any other user will not accidentally delete the project. -- Priority.
+-- In each delete buttons i have to add feature where i have to type or copy paste project name just as shown in the dialog box so that i or any other user will not accidentally delete the project. -- Priority. -- Done.
 
--- Have to tell Antigravity to check ui for each scenario as when i click collapse menu button dashboar and settings are not up too the mark in ui and also logout and change theme buttons must be in proper position according to the screen size and collapse menu ui. -- Priority. --> currently gave this task to antigravity to check and fix it. But i have to check if it is fixed or not.
+-- Have to tell Antigravity to check ui for each scenario as when i click collapse menu button dashboar and settings are not up too the mark in ui and also logout and change theme buttons must be in proper position according to the screen size and collapse menu ui. -- Priority. --> currently gave this task to antigravity to check and fix it. But i have to check if it is fixed or not. -- Done. But there i still have to do somechanges.
+        
         -- It even make the side navabar even worst as now it is not able to open and show page on side and when collapsing i can't see any of the button logos.
          
 
@@ -49,7 +50,7 @@ i got above error earlier and so i want you to run the site in browser and test 
 
 
 
----- Have to tell Antigravity to remove the supabase. 
+ 
 
 ---- now here is thing 
     -- OTP feature

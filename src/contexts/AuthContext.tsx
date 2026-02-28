@@ -4,7 +4,7 @@ import { apiGetMe, apiSignup, apiLogin, apiUpdateMe, apiDeleteAccount, clearToke
 interface AuthContextType {
   user: ApiUser | null;
   loading: boolean;
-  signUp: (email: string, password: string, displayName: string) => Promise<{ error: string | null }>;
+  signUp: (email: string, password: string, displayName: string, code: string) => Promise<{ error: string | null }>;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
   updateProfile: (updates: { display_name?: string }) => Promise<{ error: string | null }>;
@@ -35,8 +35,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
-  const signUp = async (email: string, password: string, displayName: string) => {
-    const { data, error } = await apiSignup(email, password, displayName);
+  const signUp = async (email: string, password: string, displayName: string, code: string) => {
+    const { data, error } = await apiSignup(email, password, displayName, code);
     if (data?.user) {
       setUser(data.user);
     }
