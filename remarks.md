@@ -2,6 +2,8 @@
     -- we add feature such that site will be able to see the git repo commits in the site in seperate dashboard like view in the site and also the tasks in the site will be updated according to the commits in the git repo.
         -- Now here is my plan we add ai agent such that it will not change any of the written text we did but it will be able to update us by the git repo commits i can put this in seperate section or i can add it such that it will ask user if what agent is updating is correct or not and he will be able to decide to update or not.
         -- we add feature such that site will be able to see the git repo commits in the site in seperate dashboard like view in the site and also the tasks in the site will be updated according to the commits in the git repo.
+        ----> But it also requires AI Agent capabilities as it will be able to understand the commit message and update the tasks accordingly and can decide if i also join it with the codebase so that it can be able to connect to the readme md file or any other file like this.
+
 
 <!-- -- I have to change database to the postgresql as sql lite is tempory place holder. -- Done.
 
@@ -19,6 +21,8 @@
 
 -- If possible want to add ai agent which will be able to give summrized answers if i asked what tasks pending like this general questions. 
     -- But this is later stage task.       
+
+
 
 -- Currently whatever is created is great but i think that all the things just been created feels like it is not proper as i can add what project i added in here but i cannot track the process or add all things i wanted in there i think i needed to connect this with the notion so that i can be able to track this propely and also there i can be able to add whatever i want.
     -- I think there must be some agent or process which will connect this two seamlessly such that if  i add project in here it will must reflect in notion and also if project is completed in the notion it must show this in the our site.
@@ -39,7 +43,7 @@
 
 <!-- -- There is need for the proper Gmail integration as there is no proper verification of the gmail to check if the mail is valid or not. - Done Otp added. -->
 
--- hey here is the thing first of all can you analyse the  code one more time and see is there any issues in the code or not  as there might be issues in the login and sign up and also the project creation i think it is might not be working so can you check and tell me where you think there is no issues??
+<!-- -- hey here is the thing first of all can you analyse the  code one more time and see is there any issues in the code or not  as there might be issues in the login and sign up and also the project creation i think it is might not be working so can you check and tell me where you think there is no issues?? Done for Local project. -->
  
 
 ---- now here is thing 
@@ -48,3 +52,10 @@
     -- Add the main 20 projects first and than add the remaining projects also inside of the this account ok.
 
 -- There is issue with the database connectivity it fills like there is issues.this is not able to find the data into database i am not able to find the tables in the db and also i do not think every thing is happening correctly have to check that.
+
+4/3/2026
+ 
+-- I think there is no forgot password option so should add it.
+-- cd "c:\Users\smitv\OneDrive\Desktop\Projects\Project_manager\Backend" && node index.js so right now we are not using the npm run dev, and why we are not using this command?? -- No npm start is also working 
+-- if have to tell user there is issue in detail he entered in the sign up tell them at that page not when user goes to the otp page. you know why this is needed and it should be shown with the below of the input field with red color and message telling what is the real issue ok. 
+-- Date is allowing of year 1 or 12313 make sure to add the proper date range for the date input field i think before and after 100 years is enough ok from current date or year. 
