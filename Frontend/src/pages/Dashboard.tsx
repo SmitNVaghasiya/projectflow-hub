@@ -25,7 +25,7 @@ export default function Dashboard() {
     <div className="space-y-8 w-full">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Dashboard</h1>
           <p className="text-muted-foreground mt-1">Overview of your project portfolio</p>
         </div>
         <Button className="gradient-primary" onClick={() => setNewOpen(true)}>

@@ -51,7 +51,7 @@ export default function ListView() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">List View</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">List View</h1>
           <p className="text-muted-foreground mt-1">All projects in a sortable list</p>
         </div>
         <Button className="gradient-primary" onClick={() => setNewOpen(true)}>
@@ -62,7 +62,7 @@ export default function ListView() {
 
       {/* Filters */}
       <div className="flex flex-wrap gap-3">
-        <div className="relative flex-1 min-w-[200px]">
+        <div className="relative flex-1 min-w-[140px] sm:min-w-[200px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Search projects..."
@@ -72,7 +72,7 @@ export default function ListView() {
           />
         </div>
         <Select value={filterStatus} onValueChange={setFilterStatus}>
-          <SelectTrigger className="w-[140px]">
+          <SelectTrigger className="w-[120px] sm:w-[140px]">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>
@@ -84,7 +84,7 @@ export default function ListView() {
           </SelectContent>
         </Select>
         <Select value={filterPriority} onValueChange={setFilterPriority}>
-          <SelectTrigger className="w-[140px]">
+          <SelectTrigger className="w-[120px] sm:w-[140px]">
             <SelectValue placeholder="Priority" />
           </SelectTrigger>
           <SelectContent>
@@ -104,8 +104,8 @@ export default function ListView() {
               <TableHead className="font-semibold">Project Name</TableHead>
               <TableHead className="font-semibold">Status</TableHead>
               <TableHead className="font-semibold">Priority</TableHead>
-              <TableHead className="font-semibold">Due Date</TableHead>
-              <TableHead className="font-semibold">Created</TableHead>
+              <TableHead className="font-semibold hidden md:table-cell">Due Date</TableHead>
+              <TableHead className="font-semibold hidden md:table-cell">Created</TableHead>
               <TableHead className="w-20" />
             </TableRow>
           </TableHeader>
@@ -150,7 +150,7 @@ export default function ListView() {
                         {pr.icon} {pr.label}
                       </Badge>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="hidden md:table-cell">
                       {project.due_date ? (
                         <span className={`flex items-center gap-1 text-sm ${isOverdue ? "text-destructive" : ""}`}>
                           <Calendar className="h-3.5 w-3.5" />
@@ -161,19 +161,19 @@ export default function ListView() {
                         <span className="text-muted-foreground text-sm">—</span>
                       )}
                     </TableCell>
-                    <TableCell className="text-muted-foreground text-sm">
+                    <TableCell className="text-muted-foreground text-sm hidden md:table-cell">
                       {format(new Date(project.created_at), "MMM d, yyyy")}
                     </TableCell>
                     <TableCell>
                       <div className="flex gap-1 justify-end">
                         <Button
-                          variant="ghost" size="icon" className="h-8 w-8"
+                          variant="ghost" size="icon" className="h-9 w-9 sm:h-8 sm:w-8"
                           onClick={() => setEditProject(project)}
                         >
                           <Pencil className="h-4 w-4" />
                         </Button>
                         <Button
-                          variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive"
+                          variant="ghost" size="icon" className="h-9 w-9 sm:h-8 sm:w-8 text-destructive hover:text-destructive"
                           onClick={() => setDeleteProject(project)}
                         >
                           <Trash2 className="h-4 w-4" />

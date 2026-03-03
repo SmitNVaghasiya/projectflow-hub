@@ -35,7 +35,7 @@ export default function KanbanBoard() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Kanban Board</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Kanban Board</h1>
           <p className="text-muted-foreground mt-1">Drag and drop projects between columns</p>
         </div>
         <Button className="gradient-primary" onClick={() => setNewOpen(true)}>
@@ -45,11 +45,11 @@ export default function KanbanBoard() {
       </div>
 
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 min-h-[60vh]">
+        <div className="flex md:grid md:grid-cols-3 gap-4 md:gap-6 min-h-[60vh] overflow-x-auto snap-x snap-mandatory pb-4 -mx-4 px-4 md:mx-0 md:px-0 md:overflow-visible">
           {columns.map((col) => {
             const colProjects = getColumnProjects(col.id);
             return (
-              <div key={col.id} className="flex flex-col">
+              <div key={col.id} className="flex flex-col min-w-[280px] md:min-w-0 snap-start">
                 <div className="flex items-center gap-2 mb-4">
                   <div className={`h-2.5 w-2.5 rounded-full ${col.dotClass}`} />
                   <h2 className="font-semibold text-sm uppercase tracking-wider">{col.title}</h2>
