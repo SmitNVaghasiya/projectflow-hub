@@ -25,6 +25,7 @@ const loginSchema = z.object({
 
 const sendOtpSchema = z.object({
     email: z.string().email("Invalid email address"),
+    context: z.enum(["signup", "reset"]).optional(),
 });
 
 const verifyOtpSchema = z.object({
@@ -53,11 +54,24 @@ router.post("/send-otp", otpLimiter, async (req, res, next) => {
     if (!parse.success) {
         return res.status(400).json({ error: parse.error.errors[0].message });
     }
-    const { email } = parse.data;
+    const { email, context } = parse.data;
     const cleanEmail = email.toLowerCase().trim();
 
     const client = await pool.connect();
     try {
+        // Run context-specific checks before doing any work
+        if (context) {
+            const userCheck = await client.query("SELECT id FROM users WHERE email = $1", [cleanEmail]);
+            const userExists = userCheck.rows.length > 0;
+
+            if (context === "signup" && userExists) {
+                return res.status(409).json({ error: "An account with this email already exists." });
+            }
+            if (context === "reset" && !userExists) {
+                return res.status(404).json({ error: "No account registered with this email." });
+            }
+        }
+
         // Rate limit: max 3 OTPs per email per 10 minutes (in DB)
         const recentCount = await client.query(`
             SELECT COUNT(*) FROM otp_codes
@@ -180,6 +194,98 @@ router.post("/verify-otp", async (req, res, next) => {
         }
 
         res.json({ message: "Email verified successfully.", verified: true });
+    } catch (err) {
+        next(err);
+    } finally {
+        client.release();
+    }
+});
+
+// ─── POST /api/auth/reset-password ──────────────────────────────────────────
+// Verifies OTP and resets the user's password.
+const resetPasswordSchema = z.object({
+    email: z.string().email("Invalid email address"),
+    code: z.string().length(6, "OTP code must be 6 digits"),
+    newPassword: z.string().min(8, "Password must be at least 8 characters"),
+});
+
+router.post("/reset-password", async (req, res, next) => {
+    const parse = resetPasswordSchema.safeParse(req.body);
+    if (!parse.success) {
+        return res.status(400).json({ error: parse.error.errors[0].message });
+    }
+    const { email, code, newPassword } = parse.data;
+    const cleanEmail = email.toLowerCase().trim();
+
+    const client = await pool.connect();
+    try {
+        // Verify OTP
+        const otpResult = await client.query(`
+            SELECT * FROM otp_codes
+            WHERE email = $1
+            ORDER BY created_at DESC LIMIT 1
+        `, [cleanEmail]);
+        const otp = otpResult.rows[0];
+
+        if (!otp || otp.used || new Date() > new Date(otp.expires_at) || otp.code !== code) {
+            return res.status(400).json({ error: "Invalid or expired OTP. Please request a new code." });
+        }
+
+        // Check if user exists
+        const userResult = await client.query("SELECT id FROM users WHERE email = $1", [cleanEmail]);
+        if (userResult.rows.length === 0) {
+            return res.status(404).json({ error: "No account registered with this email." });
+        }
+
+        // Hash new password and update
+        const password_hash = await bcrypt.hash(newPassword, 12);
+        await client.query(
+            "UPDATE users SET password_hash = $1 WHERE email = $2",
+            [password_hash, cleanEmail]
+        );
+
+        // Mark OTP as used
+        await client.query("UPDATE otp_codes SET used = TRUE WHERE id = $1", [otp.id]);
+
+        res.json({ message: "Password has been successfully reset." });
+    } catch (err) {
+        next(err);
+    } finally {
+        client.release();
+    }
+});
+
+// ─── POST /api/auth/change-password ─────────────────────────────────────────
+// Allows logged-in users to change their password by providing current and new password.
+const changePasswordSchema = z.object({
+    currentPassword: z.string().min(1, "Current password is required"),
+    newPassword: z.string().min(8, "New password must be at least 8 characters"),
+});
+
+router.post("/change-password", authenticate, async (req, res, next) => {
+    const parse = changePasswordSchema.safeParse(req.body);
+    if (!parse.success) {
+        return res.status(400).json({ error: parse.error.errors[0].message });
+    }
+    const { currentPassword, newPassword } = parse.data;
+
+    const client = await pool.connect();
+    try {
+        const result = await client.query("SELECT password_hash FROM users WHERE id = $1", [req.user.id]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        const user = result.rows[0];
+        const valid = await bcrypt.compare(currentPassword, user.password_hash);
+        if (!valid) {
+            return res.status(401).json({ error: "Incorrect current password." });
+        }
+
+        const new_hash = await bcrypt.hash(newPassword, 12);
+        await client.query("UPDATE users SET password_hash = $1 WHERE id = $2", [new_hash, req.user.id]);
+
+        res.json({ message: "Password has been successfully changed." });
     } catch (err) {
         next(err);
     } finally {

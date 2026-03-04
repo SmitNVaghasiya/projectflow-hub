@@ -62,17 +62,29 @@
 
 -- I think there is no forgot password option so should add it. -- add in sign in page to show there is option and also in the setting page so user can directly go and change password. 
 <!-- -- if have to tell user there is issue in detail he entered in the sign up tell them at that page not when user goes to the otp page. you know why this is needed and it should be shown with the below of the input field with red color and message telling what is the real issue ok. -- Add in Sign up page. Done 04/03/2026 -->
--- Why the hell allowing user to create the account even after the user exist in the data base aren't we checking the email in database and email must be unique key(Primary key). user names can be same but email must be unique. 
-<!-- -- Date is allowing of year 1 or 12313 make sure to add the proper date range for the date input field i think before and after 100 years is enough ok from current date or year. -- Done 04/03/2026 -->
-    -- Date range is valid now can you solve this issues and also tell user only short error message like enter valid year, date or day like this and also if user is creating the project deadline before the current date show them in pop up little warning that they are entering the before date like this message and also make this option do not this warning again but make this setting to reset in 15 to 30 days ok.
+
+<!-- -- Why the hell allowing user to create the account even after the user exist in the data base aren't we checking the email in database and email must be unique key(Primary key). user names can be same but email must be unique. -- Done 04/03/2026 -->
+
+<!-- -- Date is allowing of year 1 or 12313 make sure to add the proper date range for the date input field i think before and after 100 years is enough ok from current date or year. -- Done 04/03/2026
+    -- Date range is valid now can you solve this issues and also tell user only short error message like enter valid year, date or day like this and also if user is creating the project deadline before the current date show them in pop up little warning that they are entering the before date like this message and also make this option do not this warning again but make this setting to reset in 15 to 30 days ok. -->
+
+-- smitvaghasiya11280@gmail.com i can add regex verification for the email as it tried to send mail to the .co also 
+
 -- Have to give Team Access or give something like view only access to the project so that team members can be able to see the project and tasks in the site and also they can be able to add tasks and comments in the site. -- Add in Project page. 
--- In password field there is no visibility option -- Add in Sign up and Sign in page. 
+<!-- -- In password field there is no visibility option -- Add in Sign up and Sign in page. -- Done 04/03/2026 -->
 -- Kanban Board is slow in the production and also local have to make it fast as if user moves any project and puts in any of the board it should be updated immediately and also if there is multiple users it should be updated immediately for all the users. -- Add in Kanban page. 
     -- Kanban Board needs the improvements in the Mobile View. -- Add in Kanban page. 
+    -- https://www.kibo-ui.com/components/kanban this library code is fast and also can use the . 
 <!-- -- Have to improve the navbar for the mobile view as i can make the upper navbar instead side as it is usefull. -- Add in Navbar. Might not need now. -->
 -- In the List View there is archived option for sorting but there is no option like this in other pages and also there must be put on hold or something like this option in the List View for sorting and also have to give this option to the user that he can make whatever type of status he wants to create and use he can do this. -- Add in List View page. 
 
 <!-- -- Side bar is not good in the desktop or the mobile view needs to change that. -- Add in Sidebar. -- Done 04/03/2026 -->
 -- Have to add easy to copy project details in json like structure or just idea and project tile also. -- Add in Project page. 
 
--- I have changed the sidebar ui and improved but still some improvements needed like this in the sidebar collapse and avtar hover there are no suggestions and sidebar is open pop up size is greater i have to fix it 
+-- I have changed the sidebar ui and improved but still some improvements needed like this in the sidebar collapse and avtar hover there are no suggestions and sidebar is open pop up size is greater i have to fix it --- Later. 
+
+
+-- In the setting there is password change but there are not validation available like there is no validation of OTP. I would have handled my self after seeing this but not adding checking the password is not same as the current one or both the enetered correct and matching are same or not it is also not checked properly. 
+
+
+-- Login and Sign up page UI i have to improve and also put check on the password must be this length like error message which is in sign up page but not in the sing in page i think. -- Later.

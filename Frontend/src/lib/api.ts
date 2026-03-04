@@ -89,10 +89,24 @@ export async function apiDeleteAccount() {
 }
 
 // ─── OTP API ────────────────────────────────────────────────────────────────
-export async function apiSendOtp(email: string) {
+export async function apiSendOtp(email: string, context?: "signup" | "reset") {
     return apiFetch<{ message: string }>("/auth/send-otp", {
         method: "POST",
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, context }),
+    });
+}
+
+export async function apiResetPassword(email: string, code: string, newPassword: string) {
+    return apiFetch<{ message: string }>("/auth/reset-password", {
+        method: "POST",
+        body: JSON.stringify({ email, code, newPassword }),
+    });
+}
+
+export async function apiChangePassword(currentPassword: string, newPassword: string) {
+    return apiFetch<{ message: string }>("/auth/change-password", {
+        method: "POST",
+        body: JSON.stringify({ currentPassword, newPassword }),
     });
 }
 

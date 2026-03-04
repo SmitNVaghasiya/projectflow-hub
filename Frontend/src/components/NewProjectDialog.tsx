@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useProjects } from "@/hooks/useProjects";
 import {
     Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter
@@ -24,6 +24,26 @@ export function NewProjectDialog({ open, onOpenChange }: Props) {
     const [status, setStatus] = useState<"todo" | "in_progress" | "done">("todo");
     const [priority, setPriority] = useState<"low" | "medium" | "high">("medium");
     const [dueDate, setDueDate] = useState("");
+    const [hideWarning, setHideWarning] = useState(false);
+
+    useEffect(() => {
+        const suppressedUntil = localStorage.getItem('hidePastDateWarning');
+        if (suppressedUntil && parseInt(suppressedUntil, 10) > Date.now()) {
+            setHideWarning(true);
+        }
+    }, []);
+
+    const dismissWarning = () => {
+        const thirtyDays = Date.now() + 30 * 24 * 60 * 60 * 1000;
+        localStorage.setItem('hidePastDateWarning', thirtyDays.toString());
+        setHideWarning(true);
+    };
+
+    const isPastDate = dueDate ? new Date(dueDate) < new Date(new Date().setHours(0, 0, 0, 0)) : false;
+
+    const currentYear = new Date().getFullYear();
+    const minDate = `${currentYear - 100}-01-01`;
+    const maxDate = `${currentYear + 100}-12-31`;
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -108,9 +128,19 @@ export function NewProjectDialog({ open, onOpenChange }: Props) {
                         <Input
                             id="proj-due"
                             type="date"
+                            min={minDate}
+                            max={maxDate}
                             value={dueDate}
                             onChange={(e) => setDueDate(e.target.value)}
                         />
+                        {isPastDate && !hideWarning && (
+                            <div className="mt-2 text-xs font-medium text-amber-600 dark:text-amber-500 bg-amber-500/10 p-2 rounded flex flex-col gap-1 border border-amber-500/20">
+                                <span>Warning: The selected date is in the past.</span>
+                                <button type="button" onClick={dismissWarning} className="text-left hover:underline opacity-80">
+                                    Don't show this again for 30 days
+                                </button>
+                            </div>
+                        )}
                     </div>
 
                     <DialogFooter className="pt-2">
