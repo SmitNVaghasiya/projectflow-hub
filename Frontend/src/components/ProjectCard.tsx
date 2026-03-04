@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { MoreHorizontal, Pencil, Trash2, Calendar, Flag } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -28,13 +29,17 @@ interface Props {
 }
 
 export function ProjectCard({ project }: Props) {
+    const navigate = useNavigate();
     const [editOpen, setEditOpen] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
     const isOverdue = project.due_date && project.status !== "done" && new Date(project.due_date) < new Date();
 
     return (
         <>
-            <Card className="bg-card border-border hover:border-primary/40 transition-colors cursor-default group">
+            <Card
+                className="bg-card border-border hover:border-primary/40 hover:shadow-md transition-all cursor-pointer group"
+                onClick={() => navigate(`/projects/${project.id}`)}
+            >
                 <CardContent className="p-4 space-y-3">
                     <div className="flex items-start justify-between gap-2">
                         <p className="font-semibold text-sm leading-tight line-clamp-2">{project.name}</p>
@@ -44,6 +49,7 @@ export function ProjectCard({ project }: Props) {
                                     variant="ghost"
                                     size="icon"
                                     className="h-7 w-7 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                                    onClick={(e) => e.stopPropagation()}
                                 >
                                     <MoreHorizontal className="h-4 w-4" />
                                 </Button>

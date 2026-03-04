@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,6 +33,7 @@ const priorityLabels: Record<string, { label: string; icon: string; class: strin
 
 export default function ListView() {
   const { projects, isLoading } = useProjects();
+  const navigate = useNavigate();
   const [newOpen, setNewOpen] = useState(false);
   const [editProject, setEditProject] = useState<Project | null>(null);
   const [deleteProject, setDeleteProject] = useState<Project | null>(null);
@@ -135,7 +137,10 @@ export default function ListView() {
                 return (
                   <TableRow key={project.id} className="hover:bg-muted/30">
                     <TableCell>
-                      <div>
+                      <div
+                        className="cursor-pointer hover:text-primary transition-colors"
+                        onClick={() => navigate(`/projects/${project.id}`)}
+                      >
                         <p className="font-medium">{project.name}</p>
                         {project.description && (
                           <p className="text-xs text-muted-foreground truncate max-w-xs">{project.description}</p>

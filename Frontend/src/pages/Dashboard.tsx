@@ -1,16 +1,42 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { format } from "date-fns";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { FolderOpen, CheckCircle2, Clock, AlertTriangle, Plus } from "lucide-react";
+import {
+  FolderOpen, CheckCircle2, Clock, AlertTriangle, Plus, Trophy, Zap,
+} from "lucide-react";
 import { useProjects } from "@/hooks/useProjects";
 import { NewProjectDialog } from "@/components/NewProjectDialog";
 import { ProjectCard } from "@/components/ProjectCard";
+import {
+  ContributionGraph,
+  ContributionGraphCalendar,
+  ContributionGraphBlock,
+  ContributionGraphFooter,
+} from "@/components/kibo-ui/contribution-graph";
+import { apiGetActivityGraph, apiGetBadges, type ActivityDay, type ApiBadge } from "@/lib/api";
+import { cn } from "@/lib/utils";
 
 export default function Dashboard() {
   const { projects, isLoading, stats } = useProjects();
   const [newOpen, setNewOpen] = useState(false);
+  const [activityData, setActivityData] = useState<ActivityDay[]>([]);
+  const [badges, setBadges] = useState<ApiBadge[]>([]);
+  const [loadingActivity, setLoadingActivity] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      const [graphRes, badgesRes] = await Promise.all([
+        apiGetActivityGraph(),
+        apiGetBadges(),
+      ]);
+      if (graphRes.data) setActivityData(graphRes.data);
+      if (badgesRes.data) setBadges(badgesRes.data);
+      setLoadingActivity(false);
+    })();
+  }, []);
 
   const statCards = [
     { label: "Total Projects", value: stats.total, icon: FolderOpen, color: "text-primary" },
@@ -71,6 +97,77 @@ export default function Dashboard() {
           )}
         </CardContent>
       </Card>
+
+      {/* Contribution Graph */}
+      <Card className="bg-card border-border">
+        <CardHeader className="flex flex-row items-center gap-2">
+          <Zap className="h-4 w-4 text-primary" />
+          <CardTitle className="text-lg">Activity</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {loadingActivity ? (
+            <Skeleton className="h-32 w-full rounded-lg" />
+          ) : (
+            <ContributionGraph data={activityData}>
+              <ContributionGraphCalendar>
+                {({ activity, dayIndex, weekIndex }) => (
+                  <ContributionGraphBlock
+                    activity={activity}
+                    dayIndex={dayIndex}
+                    weekIndex={weekIndex}
+                    className={cn(
+                      'data-[level="0"]:bg-muted dark:data-[level="0"]:bg-muted/40',
+                      'data-[level="1"]:bg-primary/20',
+                      'data-[level="2"]:bg-primary/45',
+                      'data-[level="3"]:bg-primary/70',
+                      'data-[level="4"]:bg-primary',
+                    )}
+                  />
+                )}
+              </ContributionGraphCalendar>
+              <ContributionGraphFooter />
+            </ContributionGraph>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Badges */}
+      {(badges.length > 0 || !loadingActivity) && (
+        <Card className="bg-card border-border">
+          <CardHeader className="flex flex-row items-center gap-2">
+            <Trophy className="h-4 w-4 text-amber-500" />
+            <CardTitle className="text-lg">Achievements</CardTitle>
+            {badges.length > 0 && (
+              <span className="ml-auto text-xs text-muted-foreground">{badges.length} earned</span>
+            )}
+          </CardHeader>
+          <CardContent>
+            {loadingActivity ? (
+              <div className="flex flex-wrap gap-3">
+                {[1, 2, 3].map(i => <Skeleton key={i} className="h-16 w-28 rounded-xl" />)}
+              </div>
+            ) : badges.length === 0 ? (
+              <div className="flex flex-col items-center py-8 gap-2 text-center">
+                <Trophy className="h-10 w-10 text-muted-foreground/30" />
+                <p className="text-sm text-muted-foreground">No badges yet — start completing projects and tasks!</p>
+              </div>
+            ) : (
+              <div className="flex flex-wrap gap-3">
+                {badges.map((badge) => (
+                  <div
+                    key={badge.id}
+                    title={`${badge.description}\nEarned: ${format(new Date(badge.earned_at), "MMM d, yyyy")}`}
+                    className="flex flex-col items-center gap-1 px-3 py-2 rounded-xl border border-border bg-muted/30 hover:bg-muted/60 transition-colors cursor-default min-w-[80px]"
+                  >
+                    <span className="text-2xl">{badge.icon}</span>
+                    <span className="text-xs font-medium text-center leading-tight">{badge.name}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
 
       {/* Recent Projects */}
       <Card className="bg-card border-border">

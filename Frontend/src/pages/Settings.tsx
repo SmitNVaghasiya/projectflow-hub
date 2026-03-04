@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -13,8 +13,8 @@ import {
   AlertDialogFooter, AlertDialogHeader, AlertDialogTitle
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
-import { Loader2, Eye, EyeOff } from "lucide-react";
-import { apiChangePassword } from "@/lib/api";
+import { Loader2, Eye, EyeOff, Trash2, Plus } from "lucide-react";
+import { apiChangePassword, apiGetCustomStatuses, apiCreateCustomStatus, apiDeleteCustomStatus, type ApiCustomStatus } from "@/lib/api";
 
 export default function Settings() {
   const { user, signOut, updateProfile, deleteAccount } = useAuth();
@@ -28,6 +28,16 @@ export default function Settings() {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  // Custom statuses
+  const [customStatuses, setCustomStatuses] = useState<ApiCustomStatus[]>([]);
+  const [newStatusName, setNewStatusName] = useState("");
+  const [newStatusColor, setNewStatusColor] = useState("#6366f1");
+  const [addingStatus, setAddingStatus] = useState(false);
+
+  useEffect(() => {
+    apiGetCustomStatuses().then(({ data }) => { if (data) setCustomStatuses(data); });
+  }, []);
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -231,6 +241,80 @@ export default function Settings() {
           <Button variant="destructive" onClick={() => setDeleteOpen(true)}>
             Delete Account
           </Button>
+        </CardContent>
+      </Card>
+
+      {/* ── Custom Statuses ── */}
+      <Card className="bg-card border-border">
+        <CardHeader>
+          <CardTitle>Custom Statuses</CardTitle>
+          <CardDescription>Add your own project status labels (used in List View filters)</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            {customStatuses.map((s) => (
+              <div key={s.id} className="flex items-center gap-3 py-2 px-3 rounded-lg border border-border bg-muted/20">
+                <div className="h-3 w-3 rounded-full flex-shrink-0" style={{ backgroundColor: s.color }} />
+                <span className="text-sm flex-1">{s.name}</span>
+                <button
+                  onClick={async () => {
+                    const { error } = await apiDeleteCustomStatus(s.id);
+                    if (error) { toast.error(error); return; }
+                    setCustomStatuses(prev => prev.filter(x => x.id !== s.id));
+                    toast.success("Status deleted");
+                  }}
+                  className="text-muted-foreground hover:text-destructive transition-colors"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
+            ))}
+            {customStatuses.length === 0 && (
+              <p className="text-sm text-muted-foreground italic">No custom statuses yet.</p>
+            )}
+          </div>
+          <div className="flex gap-2">
+            <input
+              type="color"
+              value={newStatusColor}
+              onChange={(e) => setNewStatusColor(e.target.value)}
+              className="h-9 w-9 rounded border border-border cursor-pointer p-0.5 bg-background"
+            />
+            <Input
+              placeholder="Status name (e.g., On Hold)"
+              value={newStatusName}
+              onChange={(e) => setNewStatusName(e.target.value)}
+              onKeyDown={async (e) => {
+                if (e.key === "Enter") {
+                  if (!newStatusName.trim()) return;
+                  setAddingStatus(true);
+                  const { data, error } = await apiCreateCustomStatus(newStatusName.trim(), newStatusColor);
+                  setAddingStatus(false);
+                  if (error) { toast.error(error); return; }
+                  if (data) setCustomStatuses(prev => [...prev, data]);
+                  setNewStatusName("");
+                  toast.success("Status added!");
+                }
+              }}
+              className="flex-1"
+            />
+            <Button
+              onClick={async () => {
+                if (!newStatusName.trim()) return;
+                setAddingStatus(true);
+                const { data, error } = await apiCreateCustomStatus(newStatusName.trim(), newStatusColor);
+                setAddingStatus(false);
+                if (error) { toast.error(error); return; }
+                if (data) setCustomStatuses(prev => [...prev, data]);
+                setNewStatusName("");
+                toast.success("Status added!");
+              }}
+              disabled={addingStatus || !newStatusName.trim()}
+              className="gradient-primary shrink-0"
+            >
+              {addingStatus ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
+            </Button>
+          </div>
         </CardContent>
       </Card>
 

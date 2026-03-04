@@ -179,3 +179,253 @@ export async function apiSeedProjects(
         body: JSON.stringify({ projects }),
     });
 }
+
+// ─── Tasks API ───────────────────────────────────────────────────────────────
+export interface ApiSubItem {
+    id: string;
+    task_id: string;
+    content: string;
+    priority: "low" | "medium" | "high";
+    due_date: string | null;
+    due_time: string | null;
+    is_done: boolean;
+    sort_order: number;
+    created_at: string;
+}
+
+export interface ApiTask {
+    id: string;
+    project_id: string;
+    user_id: string;
+    content: string;
+    task_type: "simple" | "complex";
+    status: "todo" | "in_progress" | "done";
+    priority: "low" | "medium" | "high";
+    due_date: string | null;
+    due_time: string | null;
+    sort_order: number;
+    created_at: string;
+    updated_at: string;
+    sub_items: ApiSubItem[];
+}
+
+export async function apiGetTasks(projectId: string) {
+    return apiFetch<ApiTask[]>(`/projects/${projectId}/tasks`);
+}
+
+export async function apiCreateTask(
+    projectId: string,
+    task: {
+        content: string;
+        task_type?: "simple" | "complex";
+        status?: string;
+        priority?: string;
+        due_date?: string | null;
+        due_time?: string | null;
+        sort_order?: number;
+    }
+) {
+    return apiFetch<ApiTask>(`/projects/${projectId}/tasks`, {
+        method: "POST",
+        body: JSON.stringify(task),
+    });
+}
+
+export async function apiUpdateTask(
+    taskId: string,
+    updates: Partial<Omit<ApiTask, "id" | "project_id" | "user_id" | "created_at" | "sub_items">>
+) {
+    return apiFetch<ApiTask>(`/task/${taskId}`, {
+        method: "PUT",
+        body: JSON.stringify(updates),
+    });
+}
+
+export async function apiDeleteTask(taskId: string) {
+    return apiFetch(`/task/${taskId}`, { method: "DELETE" });
+}
+
+export async function apiReorderTasks(
+    projectId: string,
+    order: Array<{ id: string; sort_order: number }>
+) {
+    return apiFetch(`/projects/${projectId}/tasks/reorder`, {
+        method: "PATCH",
+        body: JSON.stringify({ order }),
+    });
+}
+
+// ─── Sub-items API ───────────────────────────────────────────────────────────
+export async function apiCreateSubItem(
+    taskId: string,
+    subItem: {
+        content: string;
+        priority?: string;
+        due_date?: string | null;
+        due_time?: string | null;
+        sort_order?: number;
+    }
+) {
+    return apiFetch<ApiSubItem>(`/task/${taskId}/sub-items`, {
+        method: "POST",
+        body: JSON.stringify(subItem),
+    });
+}
+
+export async function apiUpdateSubItem(
+    subId: string,
+    updates: Partial<Omit<ApiSubItem, "id" | "task_id" | "created_at">>
+) {
+    return apiFetch<ApiSubItem>(`/sub-item/${subId}`, {
+        method: "PUT",
+        body: JSON.stringify(updates),
+    });
+}
+
+export async function apiDeleteSubItem(subId: string) {
+    return apiFetch(`/sub-item/${subId}`, { method: "DELETE" });
+}
+
+// ─── Activity + Badges API ───────────────────────────────────────────────────
+export interface ActivityDay {
+    date: string;
+    count: number;
+    level: 0 | 1 | 2 | 3 | 4;
+}
+
+export interface ApiBadge {
+    id: string;
+    name: string;
+    description: string;
+    icon: string;
+    earned_at: string;
+}
+
+export async function apiGetActivityGraph() {
+    return apiFetch<ActivityDay[]>("/activity/graph");
+}
+
+export async function apiGetBadges() {
+    return apiFetch<ApiBadge[]>("/activity/badges");
+}
+
+// ─── Collaboration — Members ─────────────────────────────────────────────────
+export interface ApiMember {
+    id: string;
+    role: "editor" | "viewer";
+    joined_at: string;
+    user_id: string;
+    email: string;
+    display_name: string;
+}
+
+export async function apiGetProjectMembers(projectId: string) {
+    return apiFetch<{ owner: { user_id: string; email: string; display_name: string }; members: ApiMember[] }>(
+        `/projects/${projectId}/members`
+    );
+}
+
+export async function apiInviteMember(projectId: string, email: string, role: "editor" | "viewer") {
+    return apiFetch<{ message: string }>(`/projects/${projectId}/members`, {
+        method: "POST",
+        body: JSON.stringify({ email, role }),
+    });
+}
+
+export async function apiUpdateMemberRole(projectId: string, memberId: string, role: "editor" | "viewer") {
+    return apiFetch<{ message: string }>(`/projects/${projectId}/members/${memberId}`, {
+        method: "PUT",
+        body: JSON.stringify({ role }),
+    });
+}
+
+export async function apiRemoveMember(projectId: string, memberId: string) {
+    return apiFetch(`/projects/${projectId}/members/${memberId}`, { method: "DELETE" });
+}
+
+// ─── Collaboration — Comments ────────────────────────────────────────────────
+export interface ApiComment {
+    id: string;
+    content: string;
+    task_id: string | null;
+    created_at: string;
+    updated_at: string;
+    user_id: string;
+    display_name: string;
+    email: string;
+}
+
+export async function apiGetComments(projectId: string, taskId?: string) {
+    const qs = taskId ? `?task_id=${taskId}` : "";
+    return apiFetch<ApiComment[]>(`/projects/${projectId}/comments${qs}`);
+}
+
+export async function apiCreateComment(projectId: string, content: string, taskId?: string | null) {
+    return apiFetch<ApiComment>(`/projects/${projectId}/comments`, {
+        method: "POST",
+        body: JSON.stringify({ content, task_id: taskId ?? null }),
+    });
+}
+
+export async function apiUpdateComment(commentId: string, content: string) {
+    return apiFetch<ApiComment>(`/comment/${commentId}`, {
+        method: "PUT",
+        body: JSON.stringify({ content }),
+    });
+}
+
+export async function apiDeleteComment(commentId: string) {
+    return apiFetch(`/comment/${commentId}`, { method: "DELETE" });
+}
+
+// ─── Custom Statuses ─────────────────────────────────────────────────────────
+export interface ApiCustomStatus {
+    id: string;
+    user_id: string;
+    name: string;
+    color: string;
+    sort_order: number;
+    created_at: string;
+}
+
+export async function apiGetCustomStatuses() {
+    return apiFetch<ApiCustomStatus[]>("/statuses");
+}
+
+export async function apiCreateCustomStatus(name: string, color: string) {
+    return apiFetch<ApiCustomStatus>("/statuses", {
+        method: "POST",
+        body: JSON.stringify({ name, color }),
+    });
+}
+
+export async function apiUpdateCustomStatus(id: string, updates: Partial<Pick<ApiCustomStatus, "name" | "color" | "sort_order">>) {
+    return apiFetch<ApiCustomStatus>(`/statuses/${id}`, {
+        method: "PUT",
+        body: JSON.stringify(updates),
+    });
+}
+
+export async function apiDeleteCustomStatus(id: string) {
+    return apiFetch(`/statuses/${id}`, { method: "DELETE" });
+}
+
+// ─── Shared / Collaborative Projects ─────────────────────────────────────────
+export interface ApiSharedProject {
+    id: string;
+    name: string;
+    description: string;
+    status: string;
+    priority: string;
+    due_date: string | null;
+    created_at: string;
+    updated_at: string;
+    member_role: "editor" | "viewer";
+    joined_at: string;
+    owner_name: string;
+    owner_email: string;
+}
+
+export async function apiGetSharedProjects() {
+    return apiFetch<ApiSharedProject[]>("/shared-projects");
+}

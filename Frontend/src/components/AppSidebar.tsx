@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import {
   LayoutDashboard, Columns3, List, Settings,
-  LogOut, Sun, Moon, PanelLeft, X, ChevronUp,
+  LogOut, Sun, Moon, PanelLeft, X, ChevronUp, Users,
 } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -13,6 +13,7 @@ const navItems = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
   { title: "Kanban Board", url: "/kanban", icon: Columns3 },
   { title: "List View", url: "/list", icon: List },
+  { title: "Collaborations", url: "/collaborations", icon: Users },
   { title: "Settings", url: "/settings", icon: Settings },
 ];
 

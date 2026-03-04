@@ -13,6 +13,8 @@ import Dashboard from "@/pages/Dashboard";
 import KanbanBoard from "@/pages/KanbanBoard";
 import ListView from "@/pages/ListView";
 import Settings from "@/pages/Settings";
+import ProjectDetail from "@/pages/ProjectDetail";
+import SharedProjects from "@/pages/SharedProjects";
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -57,8 +59,10 @@ const App = () => (
               <Route path="/forgot-password" element={<PublicRoute><ForgotPassword /></PublicRoute>} />
               <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
                 <Route path="/" element={<Dashboard />} />
+                <Route path="/projects/:id" element={<ProjectDetail />} />
                 <Route path="/kanban" element={<KanbanBoard />} />
                 <Route path="/list" element={<ListView />} />
+                <Route path="/collaborations" element={<SharedProjects />} />
                 <Route path="/settings" element={<Settings />} />
               </Route>
               <Route path="*" element={<NotFound />} />

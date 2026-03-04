@@ -17,7 +17,7 @@
 <!-- -- Have to tell Antigravity to make the site mobile friendly for me and my friends phone or majority of phones can use so that we can easliy track through the phone. -- Priority. Done 03/03/2026 -->
         -- But still kanban board is not mobile friendly as i can't see the tasks properly and also i can't add tasks properly. and also lagging the moving from one board to other one.
         --- Also have to add feature to make site downloaded apps looks like in the phone or i can say just like the gemini shown in the android phone. it feels like a app and not a website. and easy to use if i can be able to add icon in mobile so not have to search every time think and reseach about it properly.
-        
+-- Have to make the site which is able to run same as the application means should capture whole screen if i open this in the mobile or tablet.        
 
 
 -- If possible want to add ai agent which will be able to give summrized answers if i asked what tasks pending like this general questions. 
@@ -35,10 +35,10 @@
 
 
 
-<!-- 
+
 -- i wanted to make it such that i can be able to share the link of the project with others and they can be able to see the project and tasks in the site and also they can be able to add tasks and comments in the site. 
     -- But they should not be able to edit or delete any of the tasks or projects.
-    -- OR we can add just feature to see the feature. -->
+    -- OR we can add just feature to see the feature.
 
 ---------------------------------------------------------------------------------------------------------
 
@@ -88,3 +88,10 @@
 
 
 -- Login and Sign up page UI i have to improve and also put check on the password must be this length like error message which is in sign up page but not in the sing in page i think. -- Later.
+
+<!-- -- In colabrator disable the any of the access when user enter as the viewer ok so no need to allow those users able to first add something than showing you do not have this permission. -- Done 04/03/2026
+    -- I tried with the edit permission but still colabrator is not able do any change or add ideas in existing project.
+    -- Not able to find the project id i got this error in Frontend, i think there is issue with how we are giving access it is not able to find the project id for the user which is given colab access and db thinks that this colab user do not have this project so it is not allowing him to access but Colab user only has access to the instance of the project while project is connected to the user who created means owner of that project. -->
+    -- Currently 
+
+-- If user clicks on the X sign in the colabrator he has added we must ask are you sure you want to remove this user from the project or not and also ask for the confirmation of the user to remove the user from the project. -- Add in Project page.
