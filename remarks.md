@@ -59,3 +59,6 @@
 -- cd "c:\Users\smitv\OneDrive\Desktop\Projects\Project_manager\Backend" && node index.js so right now we are not using the npm run dev, and why we are not using this command?? -- No npm start is also working 
 -- if have to tell user there is issue in detail he entered in the sign up tell them at that page not when user goes to the otp page. you know why this is needed and it should be shown with the below of the input field with red color and message telling what is the real issue ok. 
 -- Date is allowing of year 1 or 12313 make sure to add the proper date range for the date input field i think before and after 100 years is enough ok from current date or year. 
+-- Have to give Team Access or give something like view only access to the project so that team members can be able to see the project and tasks in the site and also they can be able to add tasks and comments in the site.
+-- In password field there is no visibility option
+-- 
