@@ -16,29 +16,31 @@
 
 <!-- -- Have to tell Antigravity to make the site mobile friendly for me and my friends phone or majority of phones can use so that we can easliy track through the phone. -- Priority. Done 03/03/2026 -->
         -- But still kanban board is not mobile friendly as i can't see the tasks properly and also i can't add tasks properly. and also lagging the moving from one board to other one.
-        --- Also have to add feature to make site downloaded apps looks like in the phone or i can say just like the gemini shown in the android phone. it feels like a app and not a website. and easy to use if i can be able to add icon in mobile so not have to search every time think and reseach about it properly.
--- Have to make the site which is able to run same as the application means should capture whole screen if i open this in the mobile or tablet.        
+
+--- Also have to add feature to make site downloaded apps looks like in the phone or i can say just like the gemini shown in the android phone. it feels like a app and not a website. and easy to use if i can be able to add icon in mobile so not have to search every time think and reseach about it properly.
+    -- Have to make the site which is able to run same as the application means should capture whole screen if i open this in the mobile or tablet.        
 
 
 -- If possible want to add ai agent which will be able to give summrized answers if i asked what tasks pending like this general questions. 
     -- But this is later stage task.       
 
---- I have to add this Today -- 04/03/2026.
+<!-- --- I have to add this Today -- 04/03/2026. -->
 
--- Currently whatever is created is great but i think that all the things just been created feels like it is not proper as i can add what project i added in here but i cannot track the process or add all things i wanted in there i think i needed to connect this with the notion so that i can be able to track this propely and also there i can be able to add whatever i want.
+<!-- -- Currently whatever is created is great but i think that all the things just been created feels like it is not proper as i can add what project i added in here but i cannot track the process or add all things i wanted in there i think i needed to connect this with the notion so that i can be able to track this propely and also there i can be able to add whatever i want.
     -- I think there must be some agent or process which will connect this two seamlessly such that if  i add project in here it will must reflect in notion and also if project is completed in the notion it must show this in the our site.
-    <!-- Or i can just add feature so that i can add tasks and other things in the site itself and it will be saved just like the notion saves and i can be able to track this propely and also there i can be able to add whatever i want and there will be no complecated process just like the notion and this will be easy to use process?? -->
-    -- I have think about above task and have to make sure that which one will be going to be easier so that it will not make my work much more complecated than it should be. --- Discuss with the SAM.
+    <!-- Or i can just add feature so that i can add tasks and other things in the site itself and it will be saved just like the notion saves and i can be able to track this propely and also there i can be able to add whatever i want and there will be no complecated process just like the notion and this will be easy to use process?? -- Built my own feature.
+    -- I have think about above task and have to make sure that which one will be going to be easier so that it will not make my work much more complecated than it should be. --- Discuss with the SAM.  -- Done 04/03/2026 -->
 
 
 -- I can add something like achieving something badge whenever i add project or task in the site and it will be completed in the dadeline i added and keep track of it just like game for just fun. -- Add later 
+    -- Added 04/03/2026 but still testing is remaining. 
+    -- Also added the github like streak feature. 
 
 
-
-
--- i wanted to make it such that i can be able to share the link of the project with others and they can be able to see the project and tasks in the site and also they can be able to add tasks and comments in the site. 
+<!-- -- i wanted to make it such that i can be able to share the link of the project with others and they can be able to see the project and tasks in the site and also they can be able to add tasks and comments in the site. 
     -- But they should not be able to edit or delete any of the tasks or projects.
     -- OR we can add just feature to see the feature.
+    -- Have to give Team Access or give something like view only access to the project so that team members can be able to see the project and tasks in the site and also they can be able to add tasks and comments in the site. -- Add in Project page. -- Done 04/03/2026 -->
 
 ---------------------------------------------------------------------------------------------------------
 
@@ -60,31 +62,37 @@
 
 
 
--- I think there is no forgot password option so should add it. -- add in sign in page to show there is option and also in the setting page so user can directly go and change password. 
+<!-- -- I think there is no forgot password option so should add it. -- add in sign in page to show there is option and also in the setting page so user can directly go and change password. -- Done 04/03/2026 -->
+
 <!-- -- if have to tell user there is issue in detail he entered in the sign up tell them at that page not when user goes to the otp page. you know why this is needed and it should be shown with the below of the input field with red color and message telling what is the real issue ok. -- Add in Sign up page. Done 04/03/2026 -->
 
 <!-- -- Why the hell allowing user to create the account even after the user exist in the data base aren't we checking the email in database and email must be unique key(Primary key). user names can be same but email must be unique. -- Done 04/03/2026 -->
 
 <!-- -- Date is allowing of year 1 or 12313 make sure to add the proper date range for the date input field i think before and after 100 years is enough ok from current date or year. -- Done 04/03/2026
-    -- Date range is valid now can you solve this issues and also tell user only short error message like enter valid year, date or day like this and also if user is creating the project deadline before the current date show them in pop up little warning that they are entering the before date like this message and also make this option do not this warning again but make this setting to reset in 15 to 30 days ok. -->
+    -- Date range is valid now can you solve this issues and also tell user only short error message like enter valid year, date or day like this and also if user is creating the project deadline before the current date show them in pop up little warning that they are entering the before date like this message and also make this option do not this warning again but make this setting to reset in 15 to 30 days ok.  -- Done 04/03/2026 -->
 
--- smitvaghasiya11280@gmail.com i can add regex verification for the email as it tried to send mail to the .co also 
+<!-- -- smitvaghasiya11280@gmail.com i can add regex verification for the email as it tried to send mail to the .co also  -- Done 04/03/2026 -->
 
--- Have to give Team Access or give something like view only access to the project so that team members can be able to see the project and tasks in the site and also they can be able to add tasks and comments in the site. -- Add in Project page. 
 <!-- -- In password field there is no visibility option -- Add in Sign up and Sign in page. -- Done 04/03/2026 -->
--- Kanban Board is slow in the production and also local have to make it fast as if user moves any project and puts in any of the board it should be updated immediately and also if there is multiple users it should be updated immediately for all the users. -- Add in Kanban page. 
+
+<!-- -- Kanban Board is slow in the production and also local have to make it fast as if user moves any project and puts in any of the board it should be updated immediately and also if there is multiple users it should be updated immediately for all the users. -- Add in Kanban page. 
     -- Kanban Board needs the improvements in the Mobile View. -- Add in Kanban page. 
-    -- https://www.kibo-ui.com/components/kanban this library code is fast and also can use the . 
-<!-- -- Have to improve the navbar for the mobile view as i can make the upper navbar instead side as it is usefull. -- Add in Navbar. Might not need now. -->
+    -- https://www.kibo-ui.com/components/kanban this library code is fast and also can use the .  -- Done 04/03/2026  -->
+    -- Only have to test one more time properly.
+
+<!-- -- Have to improve the navbar for the mobile view as i can make the upper navbar instead side as it is usefull. -- Add in Navbar. Might not need now.  -- Done 04/03/2026 -->
+
 -- In the List View there is archived option for sorting but there is no option like this in other pages and also there must be put on hold or something like this option in the List View for sorting and also have to give this option to the user that he can make whatever type of status he wants to create and use he can do this. -- Add in List View page. 
 
 <!-- -- Side bar is not good in the desktop or the mobile view needs to change that. -- Add in Sidebar. -- Done 04/03/2026 -->
--- Have to add easy to copy project details in json like structure or just idea and project tile also. -- Add in Project page. 
+<!-- -- Have to add easy to copy project details in json like structure or just idea and project tile also. 
+    -- Add in Project/id page. -- Done 04/03/2026-->
+    -- Add in Project page .  
 
 -- I have changed the sidebar ui and improved but still some improvements needed like this in the sidebar collapse and avtar hover there are no suggestions and sidebar is open pop up size is greater i have to fix it --- Later. 
 
 
--- In the setting there is password change but there are not validation available like there is no validation of OTP. I would have handled my self after seeing this but not adding checking the password is not same as the current one or both the enetered correct and matching are same or not it is also not checked properly. 
+<!-- -- In the setting there is password change but there are not validation available like there is no validation of OTP. I would have handled my self after seeing this but not adding checking the password is not same as the current one or both the enetered correct and matching are same or not it is also not checked properly.  -- Done 04/03/2026 -->
 
 
 -- Login and Sign up page UI i have to improve and also put check on the password must be this length like error message which is in sign up page but not in the sing in page i think. -- Later.
@@ -92,6 +100,16 @@
 <!-- -- In colabrator disable the any of the access when user enter as the viewer ok so no need to allow those users able to first add something than showing you do not have this permission. -- Done 04/03/2026
     -- I tried with the edit permission but still colabrator is not able do any change or add ideas in existing project.
     -- Not able to find the project id i got this error in Frontend, i think there is issue with how we are giving access it is not able to find the project id for the user which is given colab access and db thinks that this colab user do not have this project so it is not allowing him to access but Colab user only has access to the instance of the project while project is connected to the user who created means owner of that project. -->
-    -- Currently 
 
--- If user clicks on the X sign in the colabrator he has added we must ask are you sure you want to remove this user from the project or not and also ask for the confirmation of the user to remove the user from the project. -- Add in Project page.
+<!-- -- If user clicks on the X sign in the colabrator he has added we must ask are you sure you want to remove this user from the project or not and also ask for the confirmation of the user to remove the user from the project. -- Add in Project page.  -- Done 04/03/2026 -->
+
+-- Feature to measure what we did when we did i added but have to check it and also have to improve the ui of it.
+
+-- Have to change Whole Ui of the Project/id page as it is not looking same as i discribe it, currently it is like have all the features only but in terms of clean ui it needs too many cahnges.
+    -- like have to add colab option on top with the main project idea card.
+    -- Than sub-task showing and also complete task needs improvements.
+
+
+-- Have to add option to show all the people i added in colabrate ever and also people who invited me. make dashboard page for this. -- Later.
+
+-- Also have to make something on project card so that by seeing on top i will be able to know that this project is colabrated or not and also how many people are colabrated in this project. -- Later.

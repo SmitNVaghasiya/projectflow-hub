@@ -21,6 +21,17 @@ import {
 } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { EditProjectDialog } from "@/components/EditProjectDialog";
 import { DeleteProjectDialog } from "@/components/DeleteProjectDialog";
@@ -1039,16 +1050,34 @@ export default function ProjectDetail() {
                                         </div>
                                         <span className="text-xs text-muted-foreground capitalize border border-border rounded px-1.5 py-0.5">{m.role}</span>
                                         {isOwner && (
-                                            <button
-                                                onClick={async () => {
-                                                    await apiRemoveMember(project.id, m.id);
-                                                    setMembers(prev => prev.filter(x => x.id !== m.id));
-                                                    toast({ title: "Member removed" });
-                                                }}
-                                                className="text-muted-foreground hover:text-destructive transition-colors"
-                                            >
-                                                <X className="h-3.5 w-3.5" />
-                                            </button>
+                                            <AlertDialog>
+                                                <AlertDialogTrigger asChild>
+                                                    <button className="text-muted-foreground hover:text-destructive transition-colors">
+                                                        <X className="h-3.5 w-3.5" />
+                                                    </button>
+                                                </AlertDialogTrigger>
+                                                <AlertDialogContent>
+                                                    <AlertDialogHeader>
+                                                        <AlertDialogTitle>Remove collaborator?</AlertDialogTitle>
+                                                        <AlertDialogDescription>
+                                                            Are you sure you want to remove {m.display_name || m.email} from this project? They will lose access immediately.
+                                                        </AlertDialogDescription>
+                                                    </AlertDialogHeader>
+                                                    <AlertDialogFooter>
+                                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                        <AlertDialogAction
+                                                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                                            onClick={async () => {
+                                                                await apiRemoveMember(project.id, m.id);
+                                                                setMembers(prev => prev.filter(x => x.id !== m.id));
+                                                                toast({ title: "Member removed" });
+                                                            }}
+                                                        >
+                                                            Remove
+                                                        </AlertDialogAction>
+                                                    </AlertDialogFooter>
+                                                </AlertDialogContent>
+                                            </AlertDialog>
                                         )}
                                     </div>
                                 ))}

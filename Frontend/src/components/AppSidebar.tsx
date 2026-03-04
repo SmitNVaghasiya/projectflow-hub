@@ -3,10 +3,12 @@ import { createPortal } from "react-dom";
 import {
   LayoutDashboard, Columns3, List, Settings,
   LogOut, Sun, Moon, PanelLeft, X, ChevronUp, Users,
+  Download
 } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import { usePWAInstall } from "@/hooks/usePWAInstall";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -249,6 +251,7 @@ export function AppSidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: A
   const { signOut, user } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
+  const { isInstallable, isIOS, installPWA } = usePWAInstall();
 
   function NavItems({ onClickItem, showTooltips }: { onClickItem?: () => void; showTooltips?: boolean }) {
     return (
@@ -286,6 +289,33 @@ export function AppSidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: A
             {collapsed && showTooltips && <Tooltip label={item.title} />}
           </li>
         ))}
+
+        {/* PWA Install Button (Always visible to let users know it exists) */}
+        <li className="group relative mt-4">
+          <button
+            onClick={() => {
+              if (isInstallable) {
+                installPWA();
+                if (onClickItem) onClickItem();
+              } else if (isIOS) {
+                alert("To install ProjectHub on your iPhone/iPad:\n1. Tap the Share icon ⬆️\n2. Scroll down and tap 'Add to Home Screen' ➕");
+              } else {
+                alert("Native installation prompt isn't supported or the app is already installed.\n\nTip: You can usually install it by looking for the ⬇️ Install icon on the right side of your URL bar (in Chrome/Edge/Brave).");
+              }
+            }}
+            className={cn(
+              "sidebar-nav-item flex items-center gap-3 w-full rounded-lg py-2 text-sm font-medium",
+              "transition-all duration-150 select-none text-[#ffeb3b] bg-[#ffeb3b]/10 hover:bg-[#ffeb3b]/20",
+              collapsed && showTooltips ? "justify-center w-10 mx-auto px-0" : "px-2.5",
+            )}
+          >
+            <Download className="h-[17px] w-[17px] shrink-0" />
+            {!(collapsed && showTooltips) && (
+              <span className="truncate">Install App</span>
+            )}
+          </button>
+          {collapsed && showTooltips && <Tooltip label="Install App" />}
+        </li>
       </ul>
     );
   }
