@@ -14,7 +14,8 @@
 <!--        -- It even make the side navabar even worst as now it is not able to open and show page on side and when collapsing i can't see any of the button logos. -->
          
 
--- Have to tell Antigravity to make the site mobile friendly for me and my friends phone or majority of phones can use so that we can easliy track through the phone. -- Priority.
+<!-- -- Have to tell Antigravity to make the site mobile friendly for me and my friends phone or majority of phones can use so that we can easliy track through the phone. -- Priority. Done 03/03/2026 -->
+        -- But still kanban board is not mobile friendly as i can't see the tasks properly and also i can't add tasks properly. and also lagging the moving from one board to other one.
         --- Also have to add feature to make site downloaded apps looks like in the phone or i can say just like the gemini shown in the android phone. it feels like a app and not a website. and easy to use if i can be able to add icon in mobile so not have to search every time think and reseach about it properly.
         
 
@@ -22,7 +23,7 @@
 -- If possible want to add ai agent which will be able to give summrized answers if i asked what tasks pending like this general questions. 
     -- But this is later stage task.       
 
-
+--- I have to add this Today -- 04/03/2026.
 
 -- Currently whatever is created is great but i think that all the things just been created feels like it is not proper as i can add what project i added in here but i cannot track the process or add all things i wanted in there i think i needed to connect this with the notion so that i can be able to track this propely and also there i can be able to add whatever i want.
     -- I think there must be some agent or process which will connect this two seamlessly such that if  i add project in here it will must reflect in notion and also if project is completed in the notion it must show this in the our site.
@@ -48,17 +49,30 @@
 
 ---- now here is thing 
     <!-- -- OTP feature -->
-    -- Make the site live
+    <!-- -- Make the site live -- Done 04/03/2026-->
     -- Add the main 20 projects first and than add the remaining projects also inside of the this account ok.
 
--- There is issue with the database connectivity it fills like there is issues.this is not able to find the data into database i am not able to find the tables in the db and also i do not think every thing is happening correctly have to check that.
+<!-- -- There is issue with the database connectivity it fills like there is issues.this is not able to find the data into database i am not able to find the tables in the db and also i do not think every thing is happening correctly have to check that. -- Done 04/03/2026 and connectivity is solved i have to learn how can i see postgresql database tables in nova as i am using it.-->
 
 4/3/2026
- 
--- I think there is no forgot password option so should add it.
--- cd "c:\Users\smitv\OneDrive\Desktop\Projects\Project_manager\Backend" && node index.js so right now we are not using the npm run dev, and why we are not using this command?? -- No npm start is also working 
--- if have to tell user there is issue in detail he entered in the sign up tell them at that page not when user goes to the otp page. you know why this is needed and it should be shown with the below of the input field with red color and message telling what is the real issue ok. 
--- Date is allowing of year 1 or 12313 make sure to add the proper date range for the date input field i think before and after 100 years is enough ok from current date or year. 
--- Have to give Team Access or give something like view only access to the project so that team members can be able to see the project and tasks in the site and also they can be able to add tasks and comments in the site.
--- In password field there is no visibility option
--- 
+
+-- cd "c:\Users\smitv\OneDrive\Desktop\Projects\Project_manager\Backend" && node index.js so right now we are not using the npm run dev, and why we are not using this command?? -- No npm start is also working so check can i use both and is index command is generally used???
+
+
+
+-- I think there is no forgot password option so should add it. -- add in sign in page to show there is option and also in the setting page so user can directly go and change password. 
+<!-- -- if have to tell user there is issue in detail he entered in the sign up tell them at that page not when user goes to the otp page. you know why this is needed and it should be shown with the below of the input field with red color and message telling what is the real issue ok. -- Add in Sign up page. Done 04/03/2026 -->
+-- Why the hell allowing user to create the account even after the user exist in the data base aren't we checking the email in database and email must be unique key(Primary key). user names can be same but email must be unique. 
+<!-- -- Date is allowing of year 1 or 12313 make sure to add the proper date range for the date input field i think before and after 100 years is enough ok from current date or year. -- Done 04/03/2026 -->
+    -- Date range is valid now can you solve this issues and also tell user only short error message like enter valid year, date or day like this and also if user is creating the project deadline before the current date show them in pop up little warning that they are entering the before date like this message and also make this option do not this warning again but make this setting to reset in 15 to 30 days ok.
+-- Have to give Team Access or give something like view only access to the project so that team members can be able to see the project and tasks in the site and also they can be able to add tasks and comments in the site. -- Add in Project page. 
+-- In password field there is no visibility option -- Add in Sign up and Sign in page. 
+-- Kanban Board is slow in the production and also local have to make it fast as if user moves any project and puts in any of the board it should be updated immediately and also if there is multiple users it should be updated immediately for all the users. -- Add in Kanban page. 
+    -- Kanban Board needs the improvements in the Mobile View. -- Add in Kanban page. 
+<!-- -- Have to improve the navbar for the mobile view as i can make the upper navbar instead side as it is usefull. -- Add in Navbar. Might not need now. -->
+-- In the List View there is archived option for sorting but there is no option like this in other pages and also there must be put on hold or something like this option in the List View for sorting and also have to give this option to the user that he can make whatever type of status he wants to create and use he can do this. -- Add in List View page. 
+
+<!-- -- Side bar is not good in the desktop or the mobile view needs to change that. -- Add in Sidebar. -- Done 04/03/2026 -->
+-- Have to add easy to copy project details in json like structure or just idea and project tile also. -- Add in Project page. 
+
+-- I have changed the sidebar ui and improved but still some improvements needed like this in the sidebar collapse and avtar hover there are no suggestions and sidebar is open pop up size is greater i have to fix it 

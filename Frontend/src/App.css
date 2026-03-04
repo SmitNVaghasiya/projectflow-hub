@@ -1,42 +1,124 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* ─────────────────────────────────────────────────────────────────────────────
+   SIDEBAR THEME TOKENS
+   Paste these at the bottom of your index.css (after your existing rules).
+   They override the sidebar CSS variables for a more refined look in dark mode.
+───────────────────────────────────────────────────────────────────────────── */
+
+/* Light sidebar — clean white/gray */
+:root {
+  --sidebar-background: 0 0% 98%;
+  --sidebar-foreground: 240 6% 30%;
+  --sidebar-foreground-muted: 240 4% 58%;
+  --sidebar-primary: 258 90% 58%;
+  /* your purple */
+  --sidebar-active-bg: 258 90% 94%;
+  /* soft purple tint */
+  --sidebar-active-fg: 258 90% 45%;
+  --sidebar-hover-bg: 240 5% 93%;
+  --sidebar-border: 240 6% 90%;
+  --sidebar-trigger-fg: 240 4% 64%;
+  --sidebar-trigger-hover-bg: 240 5% 90%;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Dark sidebar — deep ink (same family as the menu pages you liked) */
+.dark {
+  --sidebar-background: 240 9% 7%;
+  /* #111114  */
+  --sidebar-foreground: 240 5% 72%;
+  --sidebar-foreground-muted: 240 4% 38%;
+  --sidebar-primary: 258 90% 72%;
+  /* lighter purple in dark */
+  --sidebar-active-bg: 258 40% 16%;
+  --sidebar-active-fg: 258 90% 82%;
+  --sidebar-hover-bg: 240 5% 13%;
+  --sidebar-border: 240 4% 14%;
+  --sidebar-trigger-fg: 240 4% 38%;
+  --sidebar-trigger-hover-bg: 240 4% 14%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* ── Component classes used in AppSidebar.tsx ── */
+
+.sidebar-root {
+  background-color: hsl(var(--sidebar-background));
+  border-right: 1px solid hsl(var(--sidebar-border));
 }
 
-.card {
-  padding: 2em;
+.sidebar-border {
+  border-color: hsl(var(--sidebar-border));
 }
 
-.read-the-docs {
-  color: #888;
+.sidebar-brand {
+  color: hsl(var(--sidebar-foreground));
+}
+
+/* Nav items */
+.sidebar-nav-item {
+  position: relative;
+}
+
+.sidebar-nav-idle {
+  color: hsl(var(--sidebar-foreground-muted));
+}
+
+.sidebar-nav-idle:hover {
+  color: hsl(var(--sidebar-foreground));
+  background-color: hsl(var(--sidebar-hover-bg));
+}
+
+.sidebar-nav-active {
+  color: hsl(var(--sidebar-active-fg));
+  background-color: hsl(var(--sidebar-active-bg));
+}
+
+.sidebar-icon-idle {
+  color: hsl(var(--sidebar-foreground-muted));
+}
+
+.sidebar-nav-idle:hover .sidebar-icon-idle {
+  color: hsl(var(--sidebar-foreground));
+}
+
+.sidebar-icon-active {
+  color: hsl(var(--sidebar-primary));
+}
+
+.sidebar-active-dot {
+  background-color: hsl(var(--sidebar-primary));
+}
+
+/* Footer */
+.sidebar-email {
+  color: hsl(var(--sidebar-foreground-muted));
+}
+
+.sidebar-footer-btn {
+  color: hsl(var(--sidebar-foreground-muted));
+}
+
+.sidebar-footer-btn:hover {
+  color: hsl(var(--sidebar-foreground));
+  background-color: hsl(var(--sidebar-hover-bg));
+}
+
+.sidebar-signout:hover {
+  color: hsl(var(--destructive)) !important;
+  background-color: hsl(var(--destructive) / 0.08) !important;
+}
+
+/* Collapse trigger button */
+.sidebar-trigger {
+  color: hsl(var(--sidebar-trigger-fg));
+}
+
+.sidebar-trigger:hover {
+  color: hsl(var(--sidebar-foreground));
+  background-color: hsl(var(--sidebar-trigger-hover-bg));
+}
+
+/* Tooltip — always dark for contrast */
+.sidebar-tooltip {
+  /* override any theme styles — tooltip is always dark */
+  background-color: #1a1a1e !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }

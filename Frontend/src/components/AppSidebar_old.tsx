@@ -1,3 +1,5 @@
+// This code is here to help when side bar is open pop is showing correctly in this code.
+
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import {
@@ -21,6 +23,23 @@ interface AppSidebarProps {
   onToggle: () => void;
   mobileOpen: boolean;
   onMobileClose: () => void;
+}
+
+/* ── Nav tooltip (hover label when collapsed) ── */
+function Tooltip({ label }: { label: string }) {
+  return (
+    <span className={cn(
+      "absolute left-full top-1/2 -translate-y-1/2 ml-3 z-[200]",
+      "px-2.5 py-1.5 rounded-md text-xs font-medium whitespace-nowrap",
+      "bg-[#1a1a1e] text-[#f0f0f0] border border-white/10 shadow-xl",
+      "opacity-0 pointer-events-none translate-x-1",
+      "group-hover:opacity-100 group-hover:translate-x-0",
+      "transition-all duration-150 ease-out",
+    )}>
+      {label}
+      <span className="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#1a1a1e]" />
+    </span>
+  );
 }
 
 /* ── Avatar initials ── */
@@ -53,40 +72,35 @@ function UserMenu({ user, collapsed, theme, onToggleTheme, onSignOut, onNavigate
   const initials = getInitials(user?.display_name, user?.email);
   const displayName = user?.display_name || user?.email || "Account";
 
-  /*
-   * KEY FIX: One consistent position logic for both collapsed & expanded.
-   *
-   * Popup width = sidebar's actual expanded width, read at runtime from
-   * the nearest <aside data-sidebar> ancestor → works for desktop (220px)
-   * AND mobile drawer (240px) automatically.
-   *
-   * left = rect.left (trigger's left edge = sidebar's left edge always).
-   * When collapsed the 220px popup naturally floats over the 60px rail — correct.
-   * When expanded the popup aligns flush with the sidebar — also correct.
-   */
+  // Single, clean position calculator — no duplicate keys
   function computePosition() {
     if (!triggerRef.current) return;
     const rect = triggerRef.current.getBoundingClientRect();
 
-    // Walk up DOM to find sidebar container and read its scrollWidth
-    // (scrollWidth = natural/expanded width, unaffected by CSS width transition)
-    let popupWidth = 220; // safe fallback
-    let el: HTMLElement | null = triggerRef.current.parentElement;
-    while (el) {
-      if (el.dataset.sidebar === "true") {
-        popupWidth = Math.max(el.scrollWidth, 220);
-        break;
-      }
-      el = el.parentElement;
-    }
+    if (collapsed) {
+      // Flyout to the RIGHT of the sidebar icon
+      setMenuStyle({
+        position: "fixed",
+        top: rect.top,
+        left: rect.right + 10,   // 10px gap to the right
+        minWidth: 220,
+        zIndex: 9999,
+      });
+    } else {
+      // Popup floats ABOVE the trigger, centred within the 220px sidebar
+      const SIDEBAR_W = 220;
+      const POPUP_W = Math.round(SIDEBAR_W * 0.90); // 198px
+      const sidebarLeft = rect.left - 8;               // subtract px-2 (8px) padding
+      const margin = Math.round((SIDEBAR_W - POPUP_W) / 2);
 
-    setMenuStyle({
-      position: "fixed",
-      left: rect.left,
-      bottom: window.innerHeight - rect.top + 8, // 8px gap above trigger
-      width: popupWidth,
-      zIndex: 9999,
-    });
+      setMenuStyle({
+        position: "fixed",
+        bottom: window.innerHeight - rect.top + 8,   // 8px gap above trigger
+        left: sidebarLeft + margin,
+        width: POPUP_W,
+        zIndex: 9999,
+      });
+    }
   }
 
   function openMenu() {
@@ -127,7 +141,8 @@ function UserMenu({ user, collapsed, theme, onToggleTheme, onSignOut, onNavigate
       className={cn(
         "rounded-xl border shadow-2xl py-1 overflow-hidden",
         "bg-[hsl(var(--popover))] border-[hsl(var(--border))] text-[hsl(var(--popover-foreground))]",
-        "animate-in fade-in-0 zoom-in-95 slide-in-from-bottom-2 duration-150",
+        "animate-in fade-in-0 zoom-in-95 duration-150",
+        collapsed ? "slide-in-from-left-2" : "slide-in-from-bottom-2",
       )}
     >
       {/* Email */}
@@ -180,6 +195,7 @@ function UserMenu({ user, collapsed, theme, onToggleTheme, onSignOut, onNavigate
   ) : null;
 
   return (
+    // group so the "Account" tooltip fires on the whole wrapper when collapsed
     <div className="group relative w-full">
       {popup}
 
@@ -211,7 +227,7 @@ function UserMenu({ user, collapsed, theme, onToggleTheme, onSignOut, onNavigate
         )}
       </button>
 
-      {/* Avatar tooltip when collapsed — uses same portal pattern as nav tooltips */}
+      {/* Tooltip shown on avatar hover when collapsed (same style as nav tooltips) */}
       {collapsed && (
         <span className={cn(
           "absolute left-full top-1/2 -translate-y-1/2 ml-3 z-[200]",
@@ -229,99 +245,6 @@ function UserMenu({ user, collapsed, theme, onToggleTheme, onSignOut, onNavigate
   );
 }
 
-/* ── NavItem with portal-based tooltip ──
-   Tooltip rendered via createPortal so it escapes the sidebar's
-   overflow:hidden and appears correctly in the viewport. */
-function NavItem({
-  item,
-  collapsed,
-  showTooltips,
-  onClickItem,
-}: {
-  item: typeof navItems[number];
-  collapsed: boolean;
-  showTooltips?: boolean;
-  onClickItem?: () => void;
-}) {
-  const liRef = useRef<HTMLLIElement>(null);
-  const [tooltipStyle, setTooltipStyle] = useState<React.CSSProperties>({});
-  const [tooltipVisible, setTooltipVisible] = useState(false);
-
-  const isCollapsedWithTooltips = collapsed && showTooltips;
-
-  function showTip() {
-    if (!liRef.current) return;
-    const rect = liRef.current.getBoundingClientRect();
-    setTooltipStyle({
-      position: "fixed",
-      top: rect.top + rect.height / 2,
-      left: rect.right + 10,
-      transform: "translateY(-50%)",
-      zIndex: 9999,
-    });
-    setTooltipVisible(true);
-  }
-
-  function hideTip() {
-    setTooltipVisible(false);
-  }
-
-  return (
-    <li
-      ref={liRef}
-      className="relative"
-      onMouseEnter={isCollapsedWithTooltips ? showTip : undefined}
-      onMouseLeave={isCollapsedWithTooltips ? hideTip : undefined}
-    >
-      <NavLink
-        to={item.url}
-        end={item.url === "/"}
-        onClick={() => { hideTip(); onClickItem?.(); }}
-        className={({ isActive }) => cn(
-          "sidebar-nav-item flex items-center gap-3 rounded-lg py-2 text-sm font-medium",
-          "transition-all duration-150 select-none",
-          isActive ? "sidebar-nav-active" : "sidebar-nav-idle",
-          isCollapsedWithTooltips ? "justify-center w-10 mx-auto px-0" : "px-2.5",
-        )}
-      >
-        {({ isActive }) => (
-          <>
-            <item.icon className={cn(
-              "h-[17px] w-[17px] shrink-0 transition-colors",
-              isActive ? "sidebar-icon-active" : "sidebar-icon-idle",
-            )} />
-            {!isCollapsedWithTooltips && (
-              <>
-                <span className="truncate">{item.title}</span>
-                {isActive && (
-                  <span className="ml-auto w-1.5 h-1.5 rounded-full sidebar-active-dot shrink-0" />
-                )}
-              </>
-            )}
-          </>
-        )}
-      </NavLink>
-
-      {/* Portal tooltip — renders outside overflow:hidden sidebar */}
-      {isCollapsedWithTooltips && tooltipVisible && createPortal(
-        <span
-          style={tooltipStyle}
-          className={cn(
-            "pointer-events-none",
-            "px-2.5 py-1.5 rounded-md text-xs font-medium whitespace-nowrap",
-            "bg-[#1a1a1e] text-[#f0f0f0] border border-white/10 shadow-xl",
-          )}
-        >
-          {item.title}
-          {/* Arrow pointing left back toward the icon */}
-          <span className="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#1a1a1e]" />
-        </span>,
-        document.body,
-      )}
-    </li>
-  );
-}
-
 /* ── Main sidebar ── */
 export function AppSidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: AppSidebarProps) {
   const { signOut, user } = useAuth();
@@ -332,13 +255,37 @@ export function AppSidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: A
     return (
       <ul className="space-y-0.5">
         {navItems.map((item) => (
-          <NavItem
-            key={item.title}
-            item={item}
-            collapsed={collapsed}
-            showTooltips={showTooltips}
-            onClickItem={onClickItem}
-          />
+          <li key={item.title} className="group relative">
+            <NavLink
+              to={item.url}
+              end={item.url === "/"}
+              onClick={onClickItem}
+              className={({ isActive }) => cn(
+                "sidebar-nav-item flex items-center gap-3 rounded-lg py-2 text-sm font-medium",
+                "transition-all duration-150 select-none",
+                isActive ? "sidebar-nav-active" : "sidebar-nav-idle",
+                collapsed && showTooltips ? "justify-center w-10 mx-auto px-0" : "px-2.5",
+              )}
+            >
+              {({ isActive }) => (
+                <>
+                  <item.icon className={cn(
+                    "h-[17px] w-[17px] shrink-0 transition-colors",
+                    isActive ? "sidebar-icon-active" : "sidebar-icon-idle",
+                  )} />
+                  {!(collapsed && showTooltips) && (
+                    <>
+                      <span className="truncate">{item.title}</span>
+                      {isActive && (
+                        <span className="ml-auto w-1.5 h-1.5 rounded-full sidebar-active-dot shrink-0" />
+                      )}
+                    </>
+                  )}
+                </>
+              )}
+            </NavLink>
+            {collapsed && showTooltips && <Tooltip label={item.title} />}
+          </li>
         ))}
       </ul>
     );
@@ -347,15 +294,12 @@ export function AppSidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: A
   return (
     <>
       {/* ══ DESKTOP SIDEBAR ══ */}
-      <aside
-        data-sidebar="true"
-        className={cn(
-          "sidebar-root hidden md:flex flex-col h-screen sticky top-0 shrink-0 overflow-hidden",
-          "shadow-[1px_0_0_0_hsl(var(--sidebar-border))]",
-          "transition-[width] duration-300 ease-in-out",
-          collapsed ? "w-[60px]" : "w-[220px]",
-        )}
-      >
+      <aside className={cn(
+        "sidebar-root hidden md:flex flex-col h-screen sticky top-0 shrink-0 overflow-hidden",
+        "shadow-[1px_0_0_0_hsl(var(--sidebar-border))]",
+        "transition-[width] duration-300 ease-in-out",
+        collapsed ? "w-[60px]" : "w-[220px]",
+      )}>
         {/* Header */}
         <div className={cn(
           "flex items-center h-14 shrink-0 px-3 border-b sidebar-border",
@@ -413,15 +357,12 @@ export function AppSidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: A
       />
 
       {/* ══ MOBILE DRAWER ══ */}
-      <div
-        data-sidebar="true"
-        className={cn(
-          "sidebar-root fixed inset-y-0 left-0 z-50 flex flex-col md:hidden overflow-hidden",
-          "w-[240px] transition-transform duration-300 ease-in-out",
-          "shadow-[1px_0_0_0_hsl(var(--sidebar-border))]",
-          mobileOpen ? "translate-x-0" : "-translate-x-full",
-        )}
-      >
+      <div className={cn(
+        "sidebar-root fixed inset-y-0 left-0 z-50 flex flex-col md:hidden overflow-hidden",
+        "w-[240px] transition-transform duration-300 ease-in-out",
+        "shadow-[1px_0_0_0_hsl(var(--sidebar-border))]",
+        mobileOpen ? "translate-x-0" : "-translate-x-full",
+      )}>
         <div className="flex items-center justify-between h-14 px-4 border-b sidebar-border shrink-0">
           <span className="text-[15px] font-semibold sidebar-brand tracking-tight">ProjectHub</span>
           <button
