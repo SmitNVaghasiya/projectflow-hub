@@ -99,7 +99,7 @@ export default function Dashboard() {
       </Card>
 
       {/* Contribution Graph */}
-      <Card className="bg-card border-border">
+      {/* <Card className="bg-card border-border">
         <CardHeader className="flex flex-row items-center gap-2">
           <Zap className="h-4 w-4 text-primary" />
           <CardTitle className="text-lg">Activity</CardTitle>
@@ -129,10 +129,10 @@ export default function Dashboard() {
             </ContributionGraph>
           )}
         </CardContent>
-      </Card>
+      </Card> */}
 
       {/* Badges */}
-      {(badges.length > 0 || !loadingActivity) && (
+      {/* {(badges.length > 0 || !loadingActivity) && (
         <Card className="bg-card border-border">
           <CardHeader className="flex flex-row items-center gap-2">
             <Trophy className="h-4 w-4 text-amber-500" />
@@ -167,7 +167,7 @@ export default function Dashboard() {
             )}
           </CardContent>
         </Card>
-      )}
+      )} */}
 
       {/* Recent Projects */}
       <Card className="bg-card border-border">

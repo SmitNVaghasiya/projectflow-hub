@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 const navItems = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
   { title: "Kanban Board", url: "/kanban", icon: Columns3 },
-  { title: "List View", url: "/list", icon: List },
+  { title: "Projects", url: "/list", icon: List },
   { title: "Collaborations", url: "/collaborations", icon: Users },
   { title: "Settings", url: "/settings", icon: Settings },
 ];
@@ -290,8 +290,9 @@ export function AppSidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: A
           </li>
         ))}
 
+        {/* -- Reason for commenting this button i will enable when main task will be completed. */}
         {/* PWA Install Button (Always visible to let users know it exists) */}
-        <li className="group relative mt-4">
+        {/* <li className="group relative mt-4">
           <button
             onClick={() => {
               if (isInstallable) {
@@ -315,7 +316,7 @@ export function AppSidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: A
             )}
           </button>
           {collapsed && showTooltips && <Tooltip label="Install App" />}
-        </li>
+        </li> */}
       </ul>
     );
   }

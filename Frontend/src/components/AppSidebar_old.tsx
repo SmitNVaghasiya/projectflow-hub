@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 const navItems = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
   { title: "Kanban Board", url: "/kanban", icon: Columns3 },
-  { title: "List View", url: "/list", icon: List },
+  { title: "Projects", url: "/list", icon: List },
   { title: "Settings", url: "/settings", icon: Settings },
 ];
 

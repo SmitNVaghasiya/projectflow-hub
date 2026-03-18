@@ -2,7 +2,7 @@
     -- we add feature such that site will be able to see the git repo commits in the site in seperate dashboard like view in the site and also the tasks in the site will be updated according to the commits in the git repo.
         -- Now here is my plan we add ai agent such that it will not change any of the written text we did but it will be able to update us by the git repo commits i can put this in seperate section or i can add it such that it will ask user if what agent is updating is correct or not and he will be able to decide to update or not.
         -- we add feature such that site will be able to see the git repo commits in the site in seperate dashboard like view in the site and also the tasks in the site will be updated according to the commits in the git repo.
-        ----> But it also requires AI Agent capabilities as it will be able to understand the commit message and update the tasks accordingly and can decide if i also join it with the codebase so that it can be able to connect to the readme md file or any other file like this.
+        ----> But it also requires AI Agent capabilities as it will be able to understand the commit message and update the tasks accordingly and can decide if i also join it with the codebase so that it can be able to connect to the readme md file or any other file like this. -- LATER.
 
 
 <!-- -- I have to change database to the postgresql as sql lite is tempory place holder. -- Done.
@@ -82,12 +82,12 @@
 
 <!-- -- Have to improve the navbar for the mobile view as i can make the upper navbar instead side as it is usefull. -- Add in Navbar. Might not need now.  -- Done 04/03/2026 -->
 
--- In the List View there is archived option for sorting but there is no option like this in other pages and also there must be put on hold or something like this option in the List View for sorting and also have to give this option to the user that he can make whatever type of status he wants to create and use he can do this. -- Add in List View page. 
+-- In the List View there is archived option for sorting but there is no option like this in other pages and also there must be put on hold or something like this option in the List View for sorting and also have to give this option to the user that he can make whatever type of status he wants to create and use he can do this. -- Add in List View page.
 
 <!-- -- Side bar is not good in the desktop or the mobile view needs to change that. -- Add in Sidebar. -- Done 04/03/2026 -->
 <!-- -- Have to add easy to copy project details in json like structure or just idea and project tile also. 
     -- Add in Project/id page. -- Done 04/03/2026-->
-    -- Add in Project page .  
+    -- Add in Project page .
 
 -- I have changed the sidebar ui and improved but still some improvements needed like this in the sidebar collapse and avtar hover there are no suggestions and sidebar is open pop up size is greater i have to fix it --- Later. 
 
@@ -113,3 +113,10 @@
 -- Have to add option to show all the people i added in colabrate ever and also people who invited me. make dashboard page for this. -- Later.
 
 -- Also have to make something on project card so that by seeing on top i will be able to know that this project is colabrated or not and also how many people are colabrated in this project. -- Later.
+
+-- For mobile app installation i am having some issues i have research them properly.
+
+
+-- 18/03/2025
+
+-- In Kanban Board i am able to move the projects quickly but it is slower when i come back and from project and tasks completion bar is slow i have to keep the data stored as cookies or something like this so that it will be able to load quickly.

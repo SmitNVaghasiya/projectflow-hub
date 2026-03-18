@@ -248,7 +248,7 @@ export default function Settings() {
       <Card className="bg-card border-border">
         <CardHeader>
           <CardTitle>Custom Statuses</CardTitle>
-          <CardDescription>Add your own project status labels (used in List View filters)</CardDescription>
+          <CardDescription>Add your own project status labels (used in Projects View filters)</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
