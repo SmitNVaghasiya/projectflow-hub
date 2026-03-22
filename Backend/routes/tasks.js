@@ -1,10 +1,11 @@
-import { Router } from "express";
+import express from "express";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 import pool from "../db.js";
 import { authenticate } from "../middleware/auth.js";
+import { taskCreationLimiterGlobal, taskCreationLimiterPerProject } from "../middleware/rateLimiter.js";
 
-const router = Router();
+const router = express.Router();
 router.use(authenticate);
 
 // ─── Schemas ─────────────────────────────────────────────────────────────────
@@ -179,9 +180,13 @@ router.get("/:projectId/tasks", async (req, res, next) => {
             return res.status(404).json({ error: "Project not found." });
         }
 
+        // Optional pagination parameters
+        const limit = parseInt(req.query.limit) || 100;
+        const offset = parseInt(req.query.offset) || 0;
+
         const tasks = await client.query(
-            `SELECT * FROM tasks WHERE project_id=$1 ORDER BY sort_order ASC, created_at ASC`,
-            [req.params.projectId]
+            `SELECT * FROM tasks WHERE project_id=$1 ORDER BY sort_order ASC, created_at ASC LIMIT $2 OFFSET $3`,
+            [req.params.projectId, limit, offset]
         );
 
         // Fetch all sub-items for these tasks in one query
@@ -228,7 +233,7 @@ router.get("/shared-projects", async (req, res, next) => {
 
 
 // ─── POST /api/projects/:projectId/tasks ─────────────────────────────────────
-router.post("/:projectId/tasks", async (req, res, next) => {
+router.post("/:projectId/tasks", taskCreationLimiterGlobal, taskCreationLimiterPerProject, async (req, res, next) => {
     const parse = createTaskSchema.safeParse(req.body);
     if (!parse.success) return res.status(400).json({ error: parse.error.errors[0].message });
 

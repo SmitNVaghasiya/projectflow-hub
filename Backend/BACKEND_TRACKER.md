@@ -1,6 +1,7 @@
 # ProjectHub — Backend Tracker
 
-_Last updated: 2026-03-04_
+_Last Updated 04/03/2026_
+_Last updated: 22/03/2026_
 
 ---
 
@@ -21,9 +22,12 @@ Backend/
 │   └── statuses.js       Custom user-defined status labels
 ├── middleware/
 │   ├── auth.js           JWT verify + revocation check
-│   ├── rateLimiter.js    Global + auth rate limits
+│   ├── rateLimiter.js    Global, project, and task rate limits
 │   └── errorHandler.js   Centralized error logging
-├── db.js                 Neon PG pool, table creation, ALTER migrations
+├── scripts/
+│   ├── migrate.js        Standalone PostgreSQL initialization + migrations
+│   └── seed.js           Seed script
+├── db.js                 Neon PG pool (initDb extracted to scripts/)
 ├── app.js                Express setup + route registration
 └── index.js              Server entry point (port listener)
 ```
@@ -180,9 +184,12 @@ All tables auto-created and evolved on startup in `db.js` using `CREATE IF NOT E
 1. **JWT Blacklist:** Every token has a `jti` UUID. Logout stores it in `revoked_tokens`. Auth middleware rejects blacklisted tokens.
 2. **Bcrypt cost 12:** Slower than default (10) to resist offline brute force.
 3. **OTP replay prevention:** `used` boolean in `otp_codes` — cannot replay captured OTPs.
-4. **Rate limiting tiers:** Global 100 req/15 min, Auth 10 req/15 min.
-5. **Title NOT NULL fix:** Old tasks table had title as NOT NULL. `db.js` now runs `ALTER COLUMN title DROP NOT NULL` on startup (safe, idempotent with `.catch`).
-6. **Member access for tasks:** `GET /:projectId/tasks` now allows project_members access, not just the owner.
+4. **Rate limiting tiers**: Global 100 req/15 min, Auth 10 req/15 min.
+5. **Generous Creation Quotas**: Instead of hard API blocking, users have generous limits (50 projects/day, 500 tasks/project/day, 3000 tasks/global/day). Exceeding these logs a warning for admins.
+6. **Task Pagination**: `GET /api/projects/:projectId/tasks` implements chunked loading (offset/limit) to handle thousands of items gracefully without freezing the UI.
+7. **Title NOT NULL fix**: Old tasks table had title as NOT NULL. `scripts/migrate.js` now runs `ALTER COLUMN title DROP NOT NULL` on startup.
+8. **Member access for tasks**: `GET /:projectId/tasks` and `GET /api/projects/:id` now allow both owner and `project_members` access.
+9. **Test Environment Bypass**: All rate limiters include `skip: () => process.env.NODE_ENV === "test"` — a permanent, industry-standard pattern ensuring limiters run in production but are bypassed during automated tests.
 
 ---
 
@@ -204,3 +211,10 @@ All tables auto-created and evolved on startup in `db.js` using `CREATE IF NOT E
 | Shared projects list | ✅ Complete | |
 | Custom status labels | ✅ Complete | |
 | DB migration safety | ✅ Complete | Idempotent ALTERs + .catch |
+| Database schema extracted from boot | ✅ Complete | Moved `initDb` logic from `db.js` to `scripts/migrate.js` |
+| Pagination for GET Tasks       | ✅ Complete | Implemented `limit` and `offset` support for chunked rendering |
+| User Rate Limiting (Projects)  | ✅ Complete | Generous 50 quota / day (alerts logged to console) |
+| User Rate Limiting (Tasks)     | ✅ Complete | Dual-layer: 500/project/day AND 3000/global/day |
+| Comment Deletion Authorization | ✅ Complete | IDOR fixed; owners can now delete comments on their project |
+| 53/53 Automated Tests Passing  | ✅ Complete | `npm run test` — auth, projects, and DB tests all green |
+| Rate Limiters Skip in Test Mode | ✅ Complete | `skip: () => NODE_ENV === "test"` — permanent, industry-standard pattern |

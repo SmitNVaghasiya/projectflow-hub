@@ -1,10 +1,11 @@
-import { Router } from "express";
+import express from "express";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 import pool from "../db.js";
 import { authenticate } from "../middleware/auth.js";
+import { projectCreationLimiter } from "../middleware/rateLimiter.js";
 
-const router = Router();
+const router = express.Router();
 
 // ─── All project routes require authentication ────────────────────────────────
 router.use(authenticate);
@@ -59,7 +60,10 @@ router.get("/:id", async (req, res, next) => {
     const client = await pool.connect();
     try {
         const result = await client.query(
-            "SELECT * FROM projects WHERE id = $1 AND user_id = $2",
+            `SELECT p.* 
+             FROM projects p
+             LEFT JOIN project_members pm ON pm.project_id = p.id AND pm.user_id = $2
+             WHERE p.id = $1 AND (p.user_id = $2 OR pm.user_id IS NOT NULL)`,
             [req.params.id, req.user.id]
         );
         if (result.rows.length === 0) {
@@ -74,8 +78,8 @@ router.get("/:id", async (req, res, next) => {
 });
 
 // ─── POST /api/projects ──────────────────────────────────────────────────────
-// Creates a new project for the authenticated user.
-router.post("/", async (req, res, next) => {
+// Creates a new project for the authenticated user (bounded by daily quota).
+router.post("/", projectCreationLimiter, async (req, res, next) => {
     const parse = createProjectSchema.safeParse(req.body);
     if (!parse.success) {
         return res.status(400).json({ error: parse.error.errors[0].message });

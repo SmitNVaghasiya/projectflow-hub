@@ -229,10 +229,12 @@ router.delete("/comment/:commentId", async (req, res, next) => {
     const client = await pool.connect();
     try {
         const existing = await client.query(
-            `SELECT id FROM comments WHERE id=$1 AND user_id=$2`,
+            `SELECT c.id FROM comments c 
+             JOIN projects p ON c.project_id = p.id 
+             WHERE c.id=$1 AND (c.user_id=$2 OR p.user_id=$2)`,
             [req.params.commentId, req.user.id]
         );
-        if (existing.rows.length === 0) return res.status(404).json({ error: "Comment not found or not yours." });
+        if (existing.rows.length === 0) return res.status(404).json({ error: "Comment not found or you don't have permission to delete it." });
         await client.query(`DELETE FROM comments WHERE id=$1`, [req.params.commentId]);
         res.json({ message: "Comment deleted." });
     } catch (err) { next(err); }
