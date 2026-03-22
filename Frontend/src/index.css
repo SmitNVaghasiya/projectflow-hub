@@ -16,7 +16,8 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 10%;
 
-    --primary: 258 90% 66%;
+    /* ── Emerald primary ── */
+    --primary: 160 84% 39%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 240 5% 96%;
@@ -25,8 +26,8 @@
     --muted: 240 5% 96%;
     --muted-foreground: 240 4% 46%;
 
-    --accent: 258 90% 96%;
-    --accent-foreground: 258 90% 46%;
+    --accent: 160 60% 94%;
+    --accent-foreground: 160 84% 25%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
@@ -39,18 +40,25 @@
 
     --border: 240 6% 90%;
     --input: 240 6% 90%;
-    --ring: 258 90% 66%;
+    --ring: 160 84% 39%;
 
     --radius: 0.75rem;
 
-    --sidebar-background: 240 5% 97%;
-    --sidebar-foreground: 240 5% 26%;
-    --sidebar-primary: 258 90% 66%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 258 90% 96%;
-    --sidebar-accent-foreground: 258 90% 46%;
+    /* ── Sidebar (light) ── */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 6% 30%;
+    --sidebar-foreground-muted: 240 4% 58%;
+    --sidebar-primary: 160 84% 39%;
+    --sidebar-active-bg: 160 60% 94%;
+    --sidebar-active-fg: 160 84% 25%;
+    --sidebar-hover-bg: 240 5% 93%;
     --sidebar-border: 240 6% 90%;
-    --sidebar-ring: 258 90% 66%;
+    --sidebar-trigger-fg: 240 4% 64%;
+    --sidebar-trigger-hover-bg: 240 5% 90%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 160 60% 94%;
+    --sidebar-accent-foreground: 160 84% 25%;
+    --sidebar-ring: 160 84% 39%;
   }
 
   .dark {
@@ -63,7 +71,8 @@
     --popover: 240 10% 6%;
     --popover-foreground: 0 0% 95%;
 
-    --primary: 258 90% 66%;
+    /* ── Emerald primary (dark) ── */
+    --primary: 160 84% 45%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 240 5% 13%;
@@ -72,8 +81,8 @@
     --muted: 240 5% 13%;
     --muted-foreground: 240 4% 55%;
 
-    --accent: 258 40% 16%;
-    --accent-foreground: 258 90% 80%;
+    --accent: 160 40% 14%;
+    --accent-foreground: 160 84% 70%;
 
     --destructive: 0 62% 50%;
     --destructive-foreground: 0 0% 100%;
@@ -86,16 +95,23 @@
 
     --border: 240 4% 16%;
     --input: 240 4% 16%;
-    --ring: 258 90% 66%;
+    --ring: 160 84% 45%;
 
-    --sidebar-background: 240 10% 5%;
-    --sidebar-foreground: 240 5% 65%;
-    --sidebar-primary: 258 90% 66%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 258 40% 14%;
-    --sidebar-accent-foreground: 258 90% 80%;
+    /* ── Sidebar (dark) ── */
+    --sidebar-background: 240 9% 7%;
+    --sidebar-foreground: 240 5% 72%;
+    --sidebar-foreground-muted: 240 4% 38%;
+    --sidebar-primary: 160 84% 50%;
+    --sidebar-active-bg: 160 40% 12%;
+    --sidebar-active-fg: 160 84% 65%;
+    --sidebar-hover-bg: 240 5% 13%;
     --sidebar-border: 240 4% 14%;
-    --sidebar-ring: 258 90% 66%;
+    --sidebar-trigger-fg: 240 4% 38%;
+    --sidebar-trigger-hover-bg: 240 4% 14%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 160 40% 14%;
+    --sidebar-accent-foreground: 160 84% 70%;
+    --sidebar-ring: 160 84% 50%;
   }
 }
 
@@ -112,7 +128,7 @@
 
 @layer utilities {
   .gradient-primary {
-    background: linear-gradient(135deg, hsl(258, 90%, 66%), hsl(220, 90%, 56%));
+    background: linear-gradient(135deg, hsl(160, 84%, 39%), hsl(180, 80%, 34%));
   }
 }
 
@@ -165,4 +181,121 @@ html {
   body {
     padding-top: env(safe-area-inset-top);
   }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   SIDEBAR THEME TOKENS
+───────────────────────────────────────────────────────────────────────────── */
+
+/* Light sidebar — clean white/gray */
+:root {
+  --sidebar-background: 0 0% 98%;
+  --sidebar-foreground: 240 6% 30%;
+  --sidebar-foreground-muted: 240 4% 58%;
+  --sidebar-primary: 160 84% 39%;   /* emerald */
+  --sidebar-active-bg: 160 60% 94%; /* soft emerald tint */
+  --sidebar-active-fg: 160 84% 25%;
+  --sidebar-hover-bg: 240 5% 93%;
+  --sidebar-border: 240 6% 90%;
+  --sidebar-trigger-fg: 240 4% 64%;
+  --sidebar-trigger-hover-bg: 240 5% 90%;
+}
+
+/* Dark sidebar — deep ink */
+.dark {
+  --sidebar-background: 240 9% 7%;     /* #111114  */
+  --sidebar-foreground: 240 5% 72%;
+  --sidebar-foreground-muted: 240 4% 38%;
+  --sidebar-primary: 160 84% 55%;       /* lighter emerald in dark */
+  --sidebar-active-bg: 160 40% 12%;
+  --sidebar-active-fg: 160 84% 65%;
+  --sidebar-hover-bg: 240 5% 13%;
+  --sidebar-border: 240 4% 14%;
+  --sidebar-trigger-fg: 240 4% 38%;
+  --sidebar-trigger-hover-bg: 240 4% 14%;
+}
+
+/* ── Component classes used in AppSidebar.tsx ── */
+.sidebar-root {
+  background-color: hsl(var(--sidebar-background));
+  border-right: 1px solid hsl(var(--sidebar-border));
+}
+
+.sidebar-border {
+  border-color: hsl(var(--sidebar-border));
+}
+
+.sidebar-brand {
+  color: hsl(var(--sidebar-foreground));
+}
+
+/* Nav items */
+.sidebar-nav-item {
+  position: relative;
+}
+
+.sidebar-nav-idle {
+  color: hsl(var(--sidebar-foreground-muted));
+}
+
+.sidebar-nav-idle:hover {
+  color: hsl(var(--sidebar-foreground));
+  background-color: hsl(var(--sidebar-hover-bg));
+}
+
+.sidebar-nav-active {
+  color: hsl(var(--sidebar-active-fg));
+  background-color: hsl(var(--sidebar-active-bg));
+}
+
+.sidebar-icon-idle {
+  color: hsl(var(--sidebar-foreground-muted));
+}
+
+.sidebar-nav-idle:hover .sidebar-icon-idle {
+  color: hsl(var(--sidebar-foreground));
+}
+
+.sidebar-icon-active {
+  color: hsl(var(--sidebar-primary));
+}
+
+.sidebar-active-dot {
+  background-color: hsl(var(--sidebar-primary));
+}
+
+/* Footer */
+.sidebar-email {
+  color: hsl(var(--sidebar-foreground-muted));
+}
+
+.sidebar-footer-btn {
+  color: hsl(var(--sidebar-foreground-muted));
+}
+
+.sidebar-footer-btn:hover {
+  color: hsl(var(--sidebar-foreground));
+  background-color: hsl(var(--sidebar-hover-bg));
+}
+
+.sidebar-signout:hover {
+  color: hsl(var(--destructive)) !important;
+  background-color: hsl(var(--destructive) / 0.08) !important;
+}
+
+/* Collapse trigger button */
+.sidebar-trigger {
+  color: hsl(var(--sidebar-trigger-fg));
+}
+
+.sidebar-trigger:hover {
+  color: hsl(var(--sidebar-foreground));
+  background-color: hsl(var(--sidebar-trigger-hover-bg));
+}
+
+/* Tooltip — always dark for contrast */
+.sidebar-tooltip {
+  background-color: #1a1a1e !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
