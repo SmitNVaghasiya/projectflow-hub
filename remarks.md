@@ -1,10 +1,3 @@
--- SAM Plan:
-    -- we add feature such that site will be able to see the git repo commits in the site in seperate dashboard like view in the site and also the tasks in the site will be updated according to the commits in the git repo.
-        -- Now here is my plan we add ai agent such that it will not change any of the written text we did but it will be able to update us by the git repo commits i can put this in seperate section or i can add it such that it will ask user if what agent is updating is correct or not and he will be able to decide to update or not.
-        -- we add feature such that site will be able to see the git repo commits in the site in seperate dashboard like view in the site and also the tasks in the site will be updated according to the commits in the git repo.
-        ----> But it also requires AI Agent capabilities as it will be able to understand the commit message and update the tasks accordingly and can decide if i also join it with the codebase so that it can be able to connect to the readme md file or any other file like this. -- LATER.
-
-
 <!-- -- I have to change database to the postgresql as sql lite is tempory place holder. -- Done.
 
 -- In each delete buttons i have to add feature where i have to type or copy paste project name just as shown in the dialog box so that i or any other user will not accidentally delete the project. -- Priority. -- Done.
@@ -15,14 +8,7 @@
          
 
 <!-- -- Have to tell Antigravity to make the site mobile friendly for me and my friends phone or majority of phones can use so that we can easliy track through the phone. -- Priority. Done 03/03/2026 -->
-        -- But still kanban board is not mobile friendly as i can't see the tasks properly and also i can't add tasks properly. and also lagging the moving from one board to other one.
-
---- Also have to add feature to make site downloaded apps looks like in the phone or i can say just like the gemini shown in the android phone. it feels like a app and not a website. and easy to use if i can be able to add icon in mobile so not have to search every time think and reseach about it properly.
-    -- Have to make the site which is able to run same as the application means should capture whole screen if i open this in the mobile or tablet.        
-
-
--- If possible want to add ai agent which will be able to give summrized answers if i asked what tasks pending like this general questions. 
-    -- But this is later stage task.       
+        -- But still kanban board is not mobile friendly as i can't see the tasks properly and also i can't add tasks properly. and also lagging the moving from one board to other one.               
 
 <!-- --- I have to add this Today -- 04/03/2026. -->
 
@@ -32,9 +18,10 @@
     -- I have think about above task and have to make sure that which one will be going to be easier so that it will not make my work much more complecated than it should be. --- Discuss with the SAM.  -- Done 04/03/2026 -->
 
 
--- I can add something like achieving something badge whenever i add project or task in the site and it will be completed in the dadeline i added and keep track of it just like game for just fun. -- Add later 
+<!-- -- I can add something like achieving something badge whenever i add project or task in the site and it will be completed in the dadeline i added and keep track of it just like game for just fun. -- Add later 
     -- Added 04/03/2026 but still testing is remaining. 
-    -- Also added the github like streak feature. 
+    -- Also added the github like streak feature. Done But stirk is looking ugly
+    -- I Have Disabled and going to reenable after main features are completed. -->
 
 
 <!-- -- i wanted to make it such that i can be able to share the link of the project with others and they can be able to see the project and tasks in the site and also they can be able to add tasks and comments in the site. 
@@ -120,3 +107,5 @@
 -- 18/03/2025
 
 -- In Kanban Board i am able to move the projects quickly but it is slower when i come back and from project and tasks completion bar is slow i have to keep the data stored as cookies or something like this so that it will be able to load quickly.
+
+-- Currently in the settings page i have added the custom statuses but i have not added the option to filter the projects in the Project page or any other module where i can use it based on the custom statuses.
