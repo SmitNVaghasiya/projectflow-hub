@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => ({
     },
     proxy: {
       "/api": {
-        target: "http://localhost:3001",
+        target: "http://127.0.0.1:3001", // Using 127.0.0.1 instead of localhost to prevent node:net aggregate errors on Windows
         changeOrigin: true,
       },
     },
@@ -58,7 +58,7 @@ export default defineConfig(({ mode }) => ({
         ],
       },
       devOptions: {
-        enabled: true,
+        enabled: false, // Disabled in dev mode to fix glob warning
       },
     }),
   ].filter(Boolean),
